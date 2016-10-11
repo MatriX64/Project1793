@@ -32,14 +32,12 @@ private:
 
     QFile *m_logFile;
 
-private:
-    void quit_normal();
-    void quit_critical();
-
 public slots:
     void write_log_file(int, const QString&);
-    void critical_receiver();
-    void normal_receiver();
+    void quit_critical_receiver();
+    void quit_normal_receiver();
+    void quit_critical();
+
 };
 
 #endif // CORE_1793_H

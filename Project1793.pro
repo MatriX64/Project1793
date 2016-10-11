@@ -24,5 +24,6 @@ HEADERS += include/core_1793.h \
 
 DISTFILES += \
     main_view.qml \
-    qml/main_view.qml
+    qml/main_view.qml \
+    qml/fatal_message.qml
 

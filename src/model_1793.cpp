@@ -24,5 +24,5 @@ void Model_1793::start()
 
 void Model_1793::quit_receiver()
 {
-    emit normal_sender();
+    emit quit_normal_sender();
 }

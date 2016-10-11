@@ -31,7 +31,8 @@ void ModuleManager_1793::check_paths()
     chpaths.waitForFinished();
     if (QString::compare(chpathsOutput, "complete\n", Qt::CaseSensitive))
     {
-        emit send_log_file(LogWarningMsg, "Ошибка проверки целостности модулей");
+        emit send_log_file(LogCriticalMsg, "Ошибка проверки целостности модулей");
+        emit quit_critical_sender();
     } else
     {
         emit send_log_file(LogInfoMsg, "Проверка наличия модулей прошла успешно");

@@ -21,8 +21,8 @@ public:
 
 signals:
     void send_log_file(int, const QString&);
-    void critical_sender();
-    void normal_sender();
+    void quit_critical_sender();
+    void quit_normal_sender();
 
 public slots:
     void quit_receiver();

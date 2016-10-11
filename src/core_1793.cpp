@@ -7,9 +7,9 @@ Core_1793::Core_1793(int argc, char *argv[])
     model = new Model_1793;
     QObject::connect(module_manager, SIGNAL(send_log_file(int,const QString&)), this, SLOT(write_log_file(int,const QString&)));
     QObject::connect(model, SIGNAL(send_log_file(int,const QString&)), this, SLOT(write_log_file(int,const QString&)));
-    QObject::connect(module_manager, SIGNAL(critical_sender()), this, SLOT(critical_receiver()));
-    QObject::connect(model, SIGNAL(critical_sender()), this, SLOT(critical_receiver()));
-    QObject::connect(model, SIGNAL(normal_sender()), this, SLOT(normal_receiver()));
+    QObject::connect(module_manager, SIGNAL(quit_critical_sender()), this, SLOT(quit_critical_receiver()));
+    QObject::connect(model, SIGNAL(quit_critical_sender()), this, SLOT(quit_critical_receiver()));
+    QObject::connect(model, SIGNAL(quit_normal_sender()), this, SLOT(quit_normal_receiver()));
     open_log_file();
 
     module_manager->start();
@@ -18,7 +18,11 @@ Core_1793::Core_1793(int argc, char *argv[])
 
 Core_1793::~Core_1793()
 {
-    quit_normal();
+    delete (module_manager);
+    delete (model);
+    write_log_file(LogInfoMsg, "Программа завершена\n");
+    m_logFile->close();
+    delete (m_logFile);
 }
 
 void Core_1793::open_log_file()
@@ -45,9 +49,22 @@ void Core_1793::write_log_file(int type, const QString& msg)
     out.flush();
 }
 
-void Core_1793::critical_receiver()
+void Core_1793::quit_critical_receiver()
 {
-    quit_critical();
+    QQmlApplicationEngine fatal_message;
+    fatal_message.load("/home/san/Qt/Projects/Project1793/qml/fatal_message.qml");
+
+    QObject::connect(application, SIGNAL(lastWindowClosed()), this, SLOT(quit_critical()));
+
+    QObject *item = fatal_message.rootObjects().first();
+    QObject::connect(item, SIGNAL(quit_signal()), this, SLOT(quit_critical()));
+
+    application->exec();
+    while(1)
+    {
+        application->processEvents();
+    }
+
 }
 
 void Core_1793::quit_critical()
@@ -55,20 +72,12 @@ void Core_1793::quit_critical()
     write_log_file(LogInfoMsg, "Программа аварийно завершена\n");
     m_logFile->close();
     delete (m_logFile);
+    delete (application);
     std::exit(0);
 }
 
-void Core_1793::normal_receiver()
+void Core_1793::quit_normal_receiver()
 {
     application->quit();
-}
-
-void Core_1793::quit_normal()
-{
-    delete (module_manager);
-    delete (model);
-    write_log_file(LogInfoMsg, "Программа завершена\n");
-    m_logFile->close();
-    delete (m_logFile);
 }
 

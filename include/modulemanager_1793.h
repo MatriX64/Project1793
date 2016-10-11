@@ -29,7 +29,7 @@ private:
 
 signals:
     void send_log_file(int, const QString&);
-    void critical_sender();
+    void quit_critical_sender();
 };
 
 #endif // MODULEMANAGER_1793_H
