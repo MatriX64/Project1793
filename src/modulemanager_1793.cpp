@@ -1,4 +1,4 @@
-#include "modulemanager_1793.h"
+#include "include/modulemanager_1793.h"
 
 ModuleManager_1793::ModuleManager_1793()
 {

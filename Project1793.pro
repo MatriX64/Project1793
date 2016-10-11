@@ -4,10 +4,10 @@ QT += qml quick
 
 CONFIG += c++11
 
-SOURCES += main.cpp \
-    core_1793.cpp \
-    modulemanager_1793.cpp \
-    model_1793.cpp
+SOURCES += src/core_1793.cpp \
+    src/main.cpp \
+    src/model_1793.cpp \
+    src/modulemanager_1793.cpp
 
 RESOURCES +=
 
@@ -17,12 +17,12 @@ QML_IMPORT_PATH =
 # Default rules for deployment.
 include(deployment.pri)
 
-HEADERS += \
-    core_1793.h \
-    modulemanager_1793.h \
-    model_1793.h \
-    name_codes_1793.h
+HEADERS += include/core_1793.h \
+    include/model_1793.h \
+    include/modulemanager_1793.h \
+    include/name_codes_1793.h
 
 DISTFILES += \
-    main_view.qml
+    main_view.qml \
+    qml/main_view.qml
 
