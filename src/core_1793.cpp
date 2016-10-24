@@ -60,11 +60,6 @@ void Core_1793::quit_critical_receiver()
     QObject::connect(item, SIGNAL(quit_signal()), this, SLOT(quit_critical()));
 
     application->exec();
-    while(1)
-    {
-        application->processEvents();
-    }
-
 }
 
 void Core_1793::quit_critical()
@@ -80,4 +75,3 @@ void Core_1793::quit_normal_receiver()
 {
     application->quit();
 }
-

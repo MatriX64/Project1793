@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main_view.qml</file>
+        <file>main_view_2.qml</file>
+        <file>fatal_message.qml</file>
+        <file>WpsAttackModule.qml</file>
+        <file>WpsAttackModuleForm.ui.qml</file>
+    </qresource>
+</RCC>

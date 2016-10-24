@@ -1,7 +1,9 @@
 #ifndef MODULEMANAGER_1793_H
 #define MODULEMANAGER_1793_H
 
+#include "module_1793.h"
 #include "name_codes_1793.h"
+#include "wps_attack_module.h"
 
 #include <QDir>
 #include <QObject>
@@ -23,9 +25,14 @@ public:
 
     void start();
 
+public: //modules
+    WPS_Attack_module *wps_attack_module;
+
 private:
      void check_paths();
      void check_libs();
+     void add_modules();
+     void delete_modules();
 
 signals:
     void send_log_file(int, const QString&);

@@ -8,6 +8,7 @@ ModuleManager_1793::ModuleManager_1793()
 ModuleManager_1793::~ModuleManager_1793()
 {
     delete (app_dir);
+    delete_modules();
     emit send_log_file(LogInfoMsg, "Менеджер модулей уничтожен");
 }
 
@@ -16,6 +17,7 @@ void ModuleManager_1793::start()
     check_paths();
     check_libs();
     emit send_log_file(LogInfoMsg, "Менеджер модулей запущен");
+    add_modules();
 }
 
 void ModuleManager_1793::check_paths()
@@ -57,4 +59,14 @@ void ModuleManager_1793::check_libs()
     {
         emit send_log_file(LogInfoMsg, "Проверка наличия библиотек прошла успешно");
     }
+}
+
+void ModuleManager_1793::add_modules()
+{
+    wps_attack_module = new WPS_Attack_module("Password_Attacks|WEP/WPA/WPA2_Attacks|WPS_Attack");
+}
+
+void ModuleManager_1793::delete_modules()
+{
+    delete (wps_attack_module);
 }
