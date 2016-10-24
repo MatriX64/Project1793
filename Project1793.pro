@@ -28,7 +28,5 @@ HEADERS += include/core_1793.h \
     include/wps_attack_module.h
 
 DISTFILES += \
-    main_view.qml \
-    WpsAttackModuleForm.ui.qml \
-    WpsAttackModule.qml
+    main_view.qml
 

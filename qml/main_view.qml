@@ -34,7 +34,7 @@ Window {
                         Rectangle {
                             anchors.fill: parent
                             WpsAttackModule {
-
+                                anchors.fill: parent
                             }
                         }
                     }

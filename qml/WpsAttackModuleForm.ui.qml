@@ -4,12 +4,11 @@ Item {
     width: 400
     height: 400
 
-    Image {
-        id: image1
-        x: 149
-        y: 159
-        width: 102
-        height: 83
-        source: "../../../../Pictures/images.jpeg"
+    Text {
+        id: text1
+        x: 187
+        y: 193
+        text: qsTr("Hello)")
+        font.pixelSize: 12
     }
 }
