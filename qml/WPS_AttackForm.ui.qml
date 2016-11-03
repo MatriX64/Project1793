@@ -6,7 +6,7 @@ Item {
 
     Text {
         id: text1
-        x: 187
+        x: 182
         y: 193
         text: qsTr("Hello)")
         font.pixelSize: 12

@@ -2,12 +2,11 @@
 
 ModuleManager_1793::ModuleManager_1793()
 {
-    app_dir = new QDir;
+
 }
 
 ModuleManager_1793::~ModuleManager_1793()
 {
-    delete (app_dir);
     delete_modules();
     emit send_log_file(LogInfoMsg, "Менеджер модулей уничтожен");
 }
@@ -18,15 +17,16 @@ void ModuleManager_1793::start()
     check_libs();
     emit send_log_file(LogInfoMsg, "Менеджер модулей запущен");
     add_modules();
+    set_modules();
 }
 
 void ModuleManager_1793::check_paths()
 {
     QProcess chpaths(this);
-    chpaths.start("chmod +x " + app_dir->absolutePath() + "/bin/scripts/chpaths.sh");
+    chpaths.start("chmod +x " + app_dir.absolutePath() + "/bin/scripts/chpaths.sh");
     chpaths.waitForFinished();
 
-    chpaths.start("/bin/bash " + app_dir->absolutePath() + "/bin/scripts/chpaths.sh");
+    chpaths.start("/bin/bash " + app_dir.absolutePath() + "/bin/scripts/chpaths.sh");
     chpaths.waitForReadyRead();
     QString chpathsOutput = QTextCodec::codecForMib(106)->toUnicode(chpaths.readAll());
     qDebug() << chpathsOutput;
@@ -44,17 +44,17 @@ void ModuleManager_1793::check_paths()
 void ModuleManager_1793::check_libs()
 {
     QProcess chlibs(this);
-    chlibs.start("chmod +x " + app_dir->absolutePath() + "/bin/scripts/chlibs.sh");
+    chlibs.start("chmod +x " + app_dir.absolutePath() + "/bin/scripts/chlibs.sh");
     chlibs.waitForFinished();
 
-    chlibs.start("/bin/bash " + app_dir->absolutePath() + "/bin/scripts/chlibs.sh");
+    chlibs.start("/bin/bash " + app_dir.absolutePath() + "/bin/scripts/chlibs.sh");
     chlibs.waitForReadyRead();
     QString chlibsOutput = QTextCodec::codecForMib(106)->toUnicode(chlibs.readAll());
     qDebug() << chlibsOutput;
     chlibs.waitForFinished();
     if (QString::compare(chlibsOutput, "complete\n", Qt::CaseSensitive))
     {
-        emit send_log_file(LogWarningMsg, "Не удалось корректно выполнить скрипт " + app_dir->absolutePath() + "/bin/Scripts/chlibs.sh");
+        emit send_log_file(LogWarningMsg, "Не удалось корректно выполнить скрипт " + app_dir.absolutePath() + "/bin/Scripts/chlibs.sh");
     } else
     {
         emit send_log_file(LogInfoMsg, "Проверка наличия библиотек прошла успешно");
@@ -63,7 +63,12 @@ void ModuleManager_1793::check_libs()
 
 void ModuleManager_1793::add_modules()
 {
-    wps_attack_module = new WPS_Attack_module("Password_Attacks|WEP/WPA/WPA2_Attacks|WPS_Attack");
+    wps_attack_module = new WPS_Attack_module("password_attacks|wep/wpa/wpa2_attacks|wps_attack", "WPS_Attack");
+}
+
+void ModuleManager_1793::set_modules()
+{
+
 }
 
 void ModuleManager_1793::delete_modules()

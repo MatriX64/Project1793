@@ -2,14 +2,11 @@
 #define CORE_1793_H
 
 #include <QGuiApplication>
+#include <QDateTime>
+
 #include "modulemanager_1793.h"
 #include "model_1793.h"
 #include "name_codes_1793.h"
-
-#include <QObject>
-#include <QString>
-#include <QDateTime>
-#include <QFile>
 
 #include <QDebug>
 
@@ -29,8 +26,8 @@ protected:
 private:
     ModuleManager_1793 *module_manager;
     Model_1793 *model;
-
     QFile *m_logFile;
+    QQmlApplicationEngine *main_view;
 
 public slots:
     void write_log_file(int, const QString&);

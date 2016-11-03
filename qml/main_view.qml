@@ -7,8 +7,9 @@ Window {
     id: root
     width: 900
     height: 700
-    title: "Project1793. Главное окно"
+    title: qsTr("Project1793. Главное окно")
     //start_input
+
     TabView {
         anchors.fill: parent
         Tab {
@@ -33,7 +34,7 @@ Window {
                         title: qsTr("SecondLabelSecond")
                         Rectangle {
                             anchors.fill: parent
-                            WpsAttackModule {
+                            WPS_Attack {
                                 anchors.fill: parent
                             }
                         }
@@ -42,6 +43,5 @@ Window {
             }
         }
     }
-
     //end_input
 }

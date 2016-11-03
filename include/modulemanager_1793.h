@@ -1,28 +1,28 @@
 #ifndef MODULEMANAGER_1793_H
 #define MODULEMANAGER_1793_H
 
-#include "module_1793.h"
-#include "name_codes_1793.h"
-#include "wps_attack_module.h"
-
 #include <QDir>
+#include <QFile>
 #include <QObject>
 #include <QString>
 #include <QTextCodec>
 #include <QProcess>
 
+#include "model_1793.h"
+#include "name_codes_1793.h"
+#include "wps_attack_module.h"
+#include "datacommunicator.h"
+
 #include <QDebug>
 
-class ModuleManager_1793 : public QObject
+class ModuleManager_1793 : public DataCommunicator
 {
     Q_OBJECT
-public:
-    QDir *app_dir;
-
 public:
     ModuleManager_1793();
     ~ModuleManager_1793();
 
+    QDir app_dir;
     void start();
 
 public: //modules
@@ -32,6 +32,7 @@ private:
      void check_paths();
      void check_libs();
      void add_modules();
+     void set_modules();
      void delete_modules();
 
 signals:
