@@ -9,7 +9,6 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
-#include "model_1793.h"
 #include "datacommunicator.h"
 
 class Module_1793 : public DataCommunicator

@@ -5,10 +5,13 @@
 #include <QString>
 #include <QStringList>
 #include <QByteArray>
+#include <QVariant>
 
 #include "name_codes_1793.h"
 
 #include <QDebug>
+
+typedef QMap<QString,QString> TabViewModel;
 
 class Model_1793 : public QObject
 {
@@ -20,7 +23,7 @@ public:
 
 public:
     QStringList networkList;
-    QByteArray qmlTabView;
+    TabViewModel qmlTabView;
     QString str;
 
 public:

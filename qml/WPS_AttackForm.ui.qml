@@ -4,11 +4,11 @@ Item {
     width: 400
     height: 400
 
-    Text {
-        id: text1
-        x: 182
-        y: 193
-        text: qsTr("Hello)")
-        font.pixelSize: 12
+    Image {
+        id: image1
+        transformOrigin: Item.Center
+        anchors.fill: parent
+        fillMode: Image.PreserveAspectFit
+        source: "../../../../Pictures/summer.jpeg"
     }
 }

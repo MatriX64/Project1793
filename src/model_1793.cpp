@@ -19,5 +19,5 @@ Model_1793::~Model_1793()
 void Model_1793::start()
 {
     emit send_log_file(LogInfoMsg, "Модель запущена");
-    model = new Model_1793(this);
+    model = this;
 }

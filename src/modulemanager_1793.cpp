@@ -13,6 +13,7 @@ ModuleManager_1793::~ModuleManager_1793()
 
 void ModuleManager_1793::start()
 {
+    mainModel = model;
     check_paths();
     check_libs();
     emit send_log_file(LogInfoMsg, "Менеджер модулей запущен");
@@ -63,12 +64,15 @@ void ModuleManager_1793::check_libs()
 
 void ModuleManager_1793::add_modules()
 {
-    wps_attack_module = new WPS_Attack_module("password_attacks|wep/wpa/wpa2_attacks|wps_attack", "WPS_Attack");
+    wps_attack_module = new WPS_Attack_module("password_attacks|wep/wpa/wpa2_attacks|wps_attack|sana|eva", "WPS_Attack");
+    wps_attack_module2 = new WPS_Attack_module("password_attacks|wep/wpa/wpa2_attacks|ume", "U");
 }
 
 void ModuleManager_1793::set_modules()
 {
-
+    //find max column
+    QList<QString> keysList = mainModel->qmlTabView.keys();
+    qDebug() << keysList;
 }
 
 void ModuleManager_1793::delete_modules()

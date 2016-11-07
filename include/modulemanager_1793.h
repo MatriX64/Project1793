@@ -23,10 +23,12 @@ public:
     ~ModuleManager_1793();
 
     QDir app_dir;
+    Model_1793 *mainModel;
     void start();
 
 public: //modules
     WPS_Attack_module *wps_attack_module;
+    WPS_Attack_module *wps_attack_module2;
 
 private:
      void check_paths();
