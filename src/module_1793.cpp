@@ -65,12 +65,7 @@ void Module_1793::add_module_to_layout(const QString& module_name, const QString
 
     for (int i = 0; i < modulePath.count(); i++)
     {
-
-        if (i == 0)
-        {
-            if (!(mainModel->qmlTabView.contains("0") && (!mainModel->qmlTabView.value("0").compare(modulePath.at(0)))))
-                mainModel->qmlTabView.insertMulti("0", modulePath.at(0));
-        } else if (i == modulePath.count() - 1)
+        if (i == modulePath.count() - 1)
         {
             QString pathTale;
             for (int j = 0; j <= i; j++)
@@ -79,10 +74,8 @@ void Module_1793::add_module_to_layout(const QString& module_name, const QString
                 pathTale.append("|");
             }
             pathTale.chop(1);
-            QRegularExpression moduleKeyTest(QString::number(i) + " \\s");
-            if (!moduleKeyTest.isValid())
-                qDebug() << "Not Valid";
-            if (!((mainModel->qmlTabView.key(pathTale).contains(moduleKeyTest) || (mainModel->qmlTabView.contains(QString::number(i)))) && (!mainModel->qmlTabView.value(QString::number(i)).compare(pathTale))))
+
+            if (!(mainModel->qmlTabView.key(pathTale).contains(QRegularExpression(QString::number(i) + "\\s\\w")) && (!mainModel->qmlTabView.value(mainModel->qmlTabView.key(pathTale)).compare(pathTale))) && (!(mainModel->qmlTabView.contains(QString::number(i)) && (!mainModel->qmlTabView.value(QString::number(i)).compare(pathTale)))))
                 mainModel->qmlTabView.insertMulti(QString::number(i) + " " + file_name, pathTale);
         } else
         {
@@ -93,8 +86,15 @@ void Module_1793::add_module_to_layout(const QString& module_name, const QString
                 pathTale.append("|");
             }
             pathTale.chop(1);
-            if (!(mainModel->qmlTabView.contains(QString::number(i)) && (!mainModel->qmlTabView.value(QString::number(i)).compare(pathTale))))
+
+            if (mainModel->qmlTabView.key(pathTale).contains(QRegularExpression(QString::number(i) + "\\s\\w")))
+            {
+                mainModel->qmlTabView.remove(mainModel->qmlTabView.key(pathTale));
+                mainModel->qmlTabView.insert(QString::number(i), pathTale);
+            } else if (!(mainModel->qmlTabView.contains(QString::number(i)) && (!mainModel->qmlTabView.value(QString::number(i)).compare(pathTale))))
+            {
                 mainModel->qmlTabView.insertMulti(QString::number(i), pathTale);
+            }
         }
     }
 
