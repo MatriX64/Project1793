@@ -64,9 +64,9 @@ void ModuleManager_1793::check_libs()
 
 void ModuleManager_1793::add_modules()
 {
-    wps_attack_module = new WPS_Attack_module("password_attacks|wep/wpa/wpa2_attacks", "WPS_Attack");
-    //wps_attack_module2 = new WPS_Attack_module("password_attacks|wps_attack|save", "Uka");
-    //wps_attack_module3 = new WPS_Attack_module("password_attacks|wps_attack|uva", "Unawps");
+    wps_attack_module = new WPS_Attack_module("password_attacks|wep/wpa/wpa2_attacks|wps_attack|eva", "WPS_Attack");
+    wps_attack_module2 = new WPS_Attack_module("crypt_test", "WPS_Attack");
+    wps_attack_module3 = new WPS_Attack_module("password_attacks|wps_attack|wep/wpa/wpa2_attacks|eva", "WPS_Attack");
 }
 
 void ModuleManager_1793::set_modules()
@@ -126,25 +126,23 @@ void ModuleManager_1793::set_modules()
             }
             pathTale.chop(1);
 
-            if (i != 0)
+            if (keysWithStrings.contains(tabName.at(j)))
             {
-                if (keysWithStrings.contains(tabName.at(j)))
-                {
-                    QJsonObject moduleAnchor;
-                    moduleAnchor.insert("0anchors.fill", "parent");
-                    QJsonObject moduleClass;
-                    moduleClass.insert(keysWithStrings.value(tabName.at(j)), moduleAnchor);
-                    moduleClass.insert("0title", "qsTr(\"" + parentPath.last() + "\")");
-                    currentTabs.insertMulti(pathTale, moduleClass);
-                } else
-                {
-                    QJsonObject moduleClass;
-                    moduleClass.insert("0title", "qsTr(\"" + parentPath.last() + "\")");
-                    moduleClass.insert("3TabView", mainIerarchy.value(tabName.at(j)));
-                    currentTabs.insertMulti(pathTale, moduleClass);
-                    mainIerarchy.remove(tabName.at(j));
-                }
+                QJsonObject moduleAnchor;
+                moduleAnchor.insert("0anchors.fill", "parent");
+                QJsonObject moduleClass;
+                moduleClass.insert(keysWithStrings.value(tabName.at(j)), moduleAnchor);
+                moduleClass.insert("0title", "qsTr(\"" + parentPath.last() + "\")");
+                currentTabs.insertMulti(pathTale, moduleClass);
             } else
+            {
+                QJsonObject moduleClass;
+                moduleClass.insert("0title", "qsTr(\"" + parentPath.last() + "\")");
+                moduleClass.insert("3TabView", mainIerarchy.value(tabName.at(j)));
+                currentTabs.insertMulti(pathTale, moduleClass);
+                mainIerarchy.remove(tabName.at(j));
+            }
+
             {
                 QJsonObject moduleClass;
                 moduleClass.insert("0title", "qsTr(\"" + parentPath.last() + "\")");
@@ -182,13 +180,28 @@ void ModuleManager_1793::set_modules()
     str.chop(2);
 
     str.remove("\"");
+    str.remove(",");
 
-    QFile main_view_file("/home/san/Qt/Projects/Project1793/qml/main_view_2.qml");
-    if (!main_view_file.open(QIODevice::ReadWrite | QIODevice::Text))
+    QRegularExpression changeExp;
+    changeExp.setPattern("\\dTabView:");
+    str.replace(changeExp, "TabView");
+    changeExp.setPattern("\\dtitle:");
+    str.replace(changeExp, "title:");
+    changeExp.setPattern("\\dTab\\d:");
+    str.replace(changeExp, "Tab");
+    changeExp.setPattern("\\danchors.fill:");
+    str.replace(changeExp, "anchors.fill:");
+    changeExp.setPattern(":\\s{");
+    str.replace(changeExp, " {");
+    changeExp.setPattern("\\\\");
+    str.replace(changeExp, "\"");
+
+    QFile main_view_file("/home/san/Qt/Projects/Project1793/qml/main_view.qml");
+    if (!main_view_file.open(QIODevice::ReadOnly | QIODevice::Text))
         return;
     QString main_view_text = main_view_file.readAll();
     main_view_file.close();
-    main_view_text.chop(1);
+
     QRegularExpression regProcessMainViewText("((?<=//start_input)(?s)(.*)(?=//end_input))");
     if (!regProcessMainViewText.isValid())
         return;
@@ -196,10 +209,10 @@ void ModuleManager_1793::set_modules()
     if (match.captured(0).compare(str))
     {
         main_view_text.replace(regProcessMainViewText, str);
-        if (!main_view_file.open(QIODevice::ReadWrite | QIODevice::Text))
+        if (!main_view_file.open(QIODevice::WriteOnly | QIODevice::Unbuffered))
             return;
-        QTextStream out(&main_view_file);
-        out << main_view_text;
+        QByteArray text = main_view_text.toUtf8();
+        main_view_file.write(text);
         main_view_file.close();
         qDebug() << "rewrited";
     }

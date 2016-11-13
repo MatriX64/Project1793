@@ -12,33 +12,51 @@ Window {
     TabView {
         anchors.fill: parent
         Tab {
-            title: qsTr("FirstLabel")
+            title: qsTr("password_attacks")
             TabView {
                 anchors.fill: parent
                 Tab {
-                    title: qsTr("Test")
-                    WPS_Attack {
+                    title: qsTr("wep/wpa/wpa2_attacks")
+                    TabView {
                         anchors.fill: parent
+                        Tab {
+                            title: qsTr("wps_attack")
+                            TabView {
+                                anchors.fill: parent
+                                Tab {
+                                    title: qsTr("eva")
+                                    WPS_Attack {
+                                        anchors.fill: parent
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                Tab {
+                    title: qsTr("wps_attack")
+                    TabView {
+                        anchors.fill: parent
+                        Tab {
+                            title: qsTr("wep/wpa/wpa2_attacks")
+                            TabView {
+                                anchors.fill: parent
+                                Tab {
+                                    title: qsTr("eva")
+                                    WPS_Attack {
+                                        anchors.fill: parent
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
         Tab {
-            title: qsTr("SecondLabel")
-            TabView {
+            title: qsTr("crypt_test")
+            WPS_Attack {
                 anchors.fill: parent
-                Tab {
-                    title: qsTr("SecondLabelSecond")
-                    WPS_Attack {
-                        anchors.fill: parent
-                    }
-                }
-                Tab {
-                    title: qsTr("SecondLabelSecond")
-                    WPS_Attack {
-                        anchors.fill: parent
-                    }
-                }
             }
         }
     }
