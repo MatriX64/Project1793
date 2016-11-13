@@ -36,5 +36,6 @@ DISTFILES += \
     qml/fatal_message.qml \
     qml/main_view.qml \
     qml/main_view_2.qml \
+    qml/WPS Attack.qml \
     qml/WPS_Attack.qml
 

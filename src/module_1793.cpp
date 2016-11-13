@@ -12,6 +12,11 @@ Module_1793::~Module_1793()
 
 void Module_1793::add_module_to_layout(const QString& module_name, const QString& file_name)
 {
+    if (file_name.contains(" "))
+    {
+        qDebug() << "Error in file name";
+    }
+
     QFile main_view_file("/home/san/Qt/Projects/Project1793/qml/main_view_2.qml");
     if (!main_view_file.open(QIODevice::ReadWrite | QIODevice::Text))
         return;
@@ -63,12 +68,13 @@ void Module_1793::add_module_to_layout(const QString& module_name, const QString
     }*/
     QJsonObject resultObject;
 
-    for (int i = 0; i < modulePath.count(); i++)
+    for (int i = 0; i < modulePath.count(); i++) //switch modules paths
     {
-        if (i == modulePath.count() - 1)
+        if (i == modulePath.count() - 1) //if it's last path
         {
             QString pathTale;
-            for (int j = 0; j <= i; j++)
+
+            for (int j = 0; j <= i; j++) //make value
             {
                 pathTale.append(modulePath.at(j));
                 pathTale.append("|");
@@ -76,11 +82,13 @@ void Module_1793::add_module_to_layout(const QString& module_name, const QString
             pathTale.chop(1);
 
             if (!(mainModel->qmlTabView.key(pathTale).contains(QRegularExpression(QString::number(i) + "\\s\\w")) && (!mainModel->qmlTabView.value(mainModel->qmlTabView.key(pathTale)).compare(pathTale))) && (!(mainModel->qmlTabView.contains(QString::number(i)) && (!mainModel->qmlTabView.value(QString::number(i)).compare(pathTale)))))
+            { //if there isn't key: number, value: keyValue or there isn't key: number+string, value: keyValue then insert key: number+string, value: keyValue
                 mainModel->qmlTabView.insertMulti(QString::number(i) + " " + file_name, pathTale);
-        } else
+            }
+        } else //if it isn't last path
         {
             QString pathTale;
-            for (int j = 0; j <= i; j++)
+            for (int j = 0; j <= i; j++) //make value
             {
                 pathTale.append(modulePath.at(j));
                 pathTale.append("|");
@@ -88,20 +96,15 @@ void Module_1793::add_module_to_layout(const QString& module_name, const QString
             pathTale.chop(1);
 
             if (mainModel->qmlTabView.key(pathTale).contains(QRegularExpression(QString::number(i) + "\\s\\w")))
-            {
+            { //if there is key: number+string then replace it with key: number, value: keyValue
                 mainModel->qmlTabView.remove(mainModel->qmlTabView.key(pathTale));
                 mainModel->qmlTabView.insert(QString::number(i), pathTale);
             } else if (!(mainModel->qmlTabView.contains(QString::number(i)) && (!mainModel->qmlTabView.value(QString::number(i)).compare(pathTale))))
-            {
+            { //else if there isn't key: number, value: keyValue
                 mainModel->qmlTabView.insertMulti(QString::number(i), pathTale);
             }
         }
-    }
-
-    QJsonDocument doc(resultObject);
-    QByteArray testViewJson = doc.toJson();
-    QString str = QString(testViewJson);
-    qDebug() << qPrintable(str);
+    }   
 
     //str.remove(0, 1);
     //str.chop(2);

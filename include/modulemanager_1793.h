@@ -7,6 +7,8 @@
 #include <QString>
 #include <QTextCodec>
 #include <QProcess>
+#include <QJsonDocument>
+#include <QJsonObject>
 
 #include "model_1793.h"
 #include "name_codes_1793.h"
@@ -29,6 +31,7 @@ public:
 public: //modules
     WPS_Attack_module *wps_attack_module;
     WPS_Attack_module *wps_attack_module2;
+    WPS_Attack_module *wps_attack_module3;
 
 private:
      void check_paths();

@@ -13,13 +13,25 @@ Window {
         anchors.fill: parent
         Tab {
             title: qsTr("FirstLabel")
+            TabView {
+                anchors.fill: parent
+                Tab {
+                    title: qsTr("Test")
+                    WPS_Attack {
+                        anchors.fill: parent
+                    }
+                }
+            }
         }
         Tab {
             title: qsTr("SecondLabel")
             TabView {
                 anchors.fill: parent
                 Tab {
-                    title: qsTr("FirstLabeFirst")
+                    title: qsTr("SecondLabelSecond")
+                    WPS_Attack {
+                        anchors.fill: parent
+                    }
                 }
                 Tab {
                     title: qsTr("SecondLabelSecond")

@@ -11,8 +11,6 @@
 
 #include <QDebug>
 
-typedef QMap<QString,QString> TabViewModel;
-
 class Model_1793 : public QObject
 {
     Q_OBJECT
@@ -23,7 +21,7 @@ public:
 
 public:
     QStringList networkList;
-    TabViewModel qmlTabView;
+    QMap<QString,QString> qmlTabView;
     QString str;
 
 public:
