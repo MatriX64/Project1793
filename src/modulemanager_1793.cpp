@@ -64,9 +64,9 @@ void ModuleManager_1793::check_libs()
 
 void ModuleManager_1793::add_modules()
 {
-    wps_attack_module = new WPS_Attack_module("password_attacks|wep/wpa/wpa2_attacks|wps_attack", "WPS_Attack");
-    wps_attack_module2 = new WPS_Attack_module("password_attacks|wps_attack|save", "Uka");
-    wps_attack_module3 = new WPS_Attack_module("password_attacks|wps_attack|uva", "Unawps");
+    wps_attack_module = new WPS_Attack_module("password_attacks|wep/wpa/wpa2_attacks", "WPS_Attack");
+    //wps_attack_module2 = new WPS_Attack_module("password_attacks|wps_attack|save", "Uka");
+    //wps_attack_module3 = new WPS_Attack_module("password_attacks|wps_attack|uva", "Unawps");
 }
 
 void ModuleManager_1793::set_modules()
@@ -138,8 +138,19 @@ void ModuleManager_1793::set_modules()
                     currentTabs.insertMulti(pathTale, moduleClass);
                 } else
                 {
-                    qDebug() << "lil";
+                    QJsonObject moduleClass;
+                    moduleClass.insert("0title", "qsTr(\"" + parentPath.last() + "\")");
+                    moduleClass.insert("3TabView", mainIerarchy.value(tabName.at(j)));
+                    currentTabs.insertMulti(pathTale, moduleClass);
+                    mainIerarchy.remove(tabName.at(j));
                 }
+            } else
+            {
+                QJsonObject moduleClass;
+                moduleClass.insert("0title", "qsTr(\"" + parentPath.last() + "\")");
+                moduleClass.insert("3TabView", mainIerarchy.value(tabName.at(j)));
+                currentTabs.insertMulti("|", moduleClass);
+                mainIerarchy.remove(tabName.at(j));
             }
         }
         QList<QString> tabKeysList = currentTabs.uniqueKeys();
@@ -154,22 +165,44 @@ void ModuleManager_1793::set_modules()
                 tabView.insert("1Tab" + QString::number(tabNumber), tabsObjects.at(n));
                 tabNumber++;
             }
-            tabView.insert("3TabView", tabView);
-            for (int u = 0; u < tabNumber; u++)
-            {
-                tabView.remove("1Tab" + QString::number(u));
-            }
+
             mainIerarchy.insertMulti(tabKeysList.at(k), tabView);
         }
     }
-    qDebug() << mainIerarchy;
+    QJsonObject root;
+    root.insert("3TabView", mainIerarchy.first());
     qDebug() << "ColumnCount:" << maxElement;
     qDebug() << keysList;
 
-    QJsonDocument doc(resultObject);
+    QJsonDocument doc(root);
     QByteArray testViewJson = doc.toJson();
     QString str = QString(testViewJson);
-    qDebug() << qPrintable(str);
+
+    str.remove(0, 1);
+    str.chop(2);
+
+    str.remove("\"");
+
+    QFile main_view_file("/home/san/Qt/Projects/Project1793/qml/main_view_2.qml");
+    if (!main_view_file.open(QIODevice::ReadWrite | QIODevice::Text))
+        return;
+    QString main_view_text = main_view_file.readAll();
+    main_view_file.close();
+    main_view_text.chop(1);
+    QRegularExpression regProcessMainViewText("((?<=//start_input)(?s)(.*)(?=//end_input))");
+    if (!regProcessMainViewText.isValid())
+        return;
+    QRegularExpressionMatch match = regProcessMainViewText.match(main_view_text);
+    if (match.captured(0).compare(str))
+    {
+        main_view_text.replace(regProcessMainViewText, str);
+        if (!main_view_file.open(QIODevice::ReadWrite | QIODevice::Text))
+            return;
+        QTextStream out(&main_view_file);
+        out << main_view_text;
+        main_view_file.close();
+        qDebug() << "rewrited";
+    }
 }
 
 void ModuleManager_1793::delete_modules()

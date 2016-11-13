@@ -17,56 +17,8 @@ void Module_1793::add_module_to_layout(const QString& module_name, const QString
         qDebug() << "Error in file name";
     }
 
-    QFile main_view_file("/home/san/Qt/Projects/Project1793/qml/main_view_2.qml");
-    if (!main_view_file.open(QIODevice::ReadWrite | QIODevice::Text))
-        return;
-    QString main_view_text = main_view_file.readAll();
-    main_view_file.close();
-    QRegularExpression regProcessMainViewText("((?<=//start_input)(?s)(.*)(?=//end_input))");
-    if (!regProcessMainViewText.isValid())
-        return;
-
     QStringList modulePath;
     modulePath = module_name.split("|");
-    //qDebug() << modulePath;
-
-    /*****************************************/
-    /*QJsonObject resultObject;
-    QJsonObject viewBefore;
-    QString currentModulesPath = QString(mainModel->qmlTabView);
-    for (int i = modulePath.count()-1; i >= 0 ; i--)
-    {
-        if (!currentModulesPath.contains("3TabView" + QString::number(i)))
-        {
-            if (i == modulePath.count()-1)
-            {
-                QJsonObject moduleAnchor;
-                moduleAnchor.insert("0anchors.fill", "parent");
-                QJsonObject moduleClass;
-                moduleClass.insert(file_name, moduleAnchor);
-                moduleClass.insert("0title", "qsTr(\"" + modulePath.at(i) + "\")");
-                QJsonObject moduleTab;
-                moduleTab.insert("1Tab0", moduleClass);
-                moduleTab.insert("0anchors.fill", "parent");
-                viewBefore.insert("3TabView" + QString::number(i), moduleTab);
-                resultObject = viewBefore;
-            } else
-            {
-                resultObject.insert("0anchors.fill", "parent");
-                viewBefore.insert("0title", "qsTr(\"" + modulePath.at(i) + "\")");
-                resultObject.insert("1Tab0", viewBefore);
-                resultObject.remove("3TabView" + QString::number(i+1));
-                resultObject.insert("3TabView" + QString::number(i), resultObject);
-
-                resultObject.remove("1Tab0");
-                resultObject.remove("0anchors.fill");
-                resultObject.remove("3TabView" + QString::number(i+1));
-
-                viewBefore = resultObject;
-            }
-        }
-    }*/
-    QJsonObject resultObject;
 
     for (int i = 0; i < modulePath.count(); i++) //switch modules paths
     {
@@ -105,16 +57,4 @@ void Module_1793::add_module_to_layout(const QString& module_name, const QString
             }
         }
     }   
-
-    //str.remove(0, 1);
-    //str.chop(2);
-
-    /*****************************************/
-    //QRegularExpressionMatch regModulesMatch = regProcessMainViewText.match(main_view_text);
-    //currentModulesPath = regModulesMatch.captured(0);
-
-    //main_view_text.replace(regProcessMainViewText, str);
-    //qDebug() << qPrintable(currentModulesPath);
-
-    //qDebug() << qPrintable(main_view_text);
 }
