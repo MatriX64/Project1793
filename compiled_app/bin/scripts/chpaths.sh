@@ -16,4 +16,5 @@ else
 		exit
 	fi
 fi
+sleep 3
 echo "complete"
