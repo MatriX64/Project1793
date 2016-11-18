@@ -8,6 +8,7 @@ Window {
     y: Screen.height / 2 - height / 2
     width: 512
     height: 288
+    color: "transparent"
     flags: Qt.FramelessWindowHint
     title: "Project1793. Starting"
 

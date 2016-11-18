@@ -33,14 +33,14 @@ void Core_1793::start()
     QThread *launchThread = new QThread;
     moduleManager->moveToThread(launchThread);
     connect(moduleManager, SIGNAL(finishLaunchRoutine()), &launchViewLoop, SLOT(quit()));
-    connect(launchThread, SIGNAL(started()), moduleManager, SLOT(startLaunchRoutine()));
-    connect(moduleManager, SIGNAL(finishLaunchRoutine()), launchThread, SLOT(quit()));
-    connect(moduleManager, SIGNAL(finishLaunchRoutine()), launchThread, SLOT(deleteLater()));
+    connect(launchThread,  SIGNAL(started()),             moduleManager,   SLOT(startLaunchRoutine()));
+    connect(moduleManager, SIGNAL(finishLaunchRoutine()), launchThread,    SLOT(quit()));
+    connect(moduleManager, SIGNAL(finishLaunchRoutine()), launchThread,    SLOT(deleteLater()));
     connect(moduleManager, SIGNAL(finishLaunchRoutine()), &launchViewLoop, SLOT(quit()));
-    connect(moduleManager, SIGNAL(finishLaunchRoutine()), splashView, SLOT(deleteLater()));
+    connect(moduleManager, SIGNAL(finishLaunchRoutine()), splashView,      SLOT(deleteLater()));
     launchThread->start();
     launchViewLoop.exec();
-    QThread::sleep(3);
+    //QThread::sleep(3);
 
     qDebug() << moduleManager->test;
 

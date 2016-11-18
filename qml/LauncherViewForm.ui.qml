@@ -4,7 +4,7 @@ Item {
     width: 400
     height: 400
 
-    Image {
+    AnimatedImage {
         id: image1
         width: 400
         height: 400
@@ -12,6 +12,6 @@ Item {
         anchors.bottomMargin: 0
         anchors.fill: parent
         fillMode: Image.PreserveAspectFit
-        source: "../../../../Pictures/0OCahoFsEF4.jpg"
+        source: "../../build-Project1793-Desktop_Qt_5_7_0_GCC_64bit-Debug/bin/images/waves.gif"
     }
 }
