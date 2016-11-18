@@ -11,7 +11,9 @@ SOURCES += src/core_1793.cpp \
     src/module_1793.cpp \
     src/wps_attack_module.cpp \
     src/datacommunicator.cpp \
-    src/global_variables_1793.cpp
+    src/global_variables_1793.cpp \
+    src/logger_1793.cpp \
+    src/app_controller_1793.cpp
 
 RESOURCES +=
 
@@ -28,14 +30,17 @@ HEADERS += include/core_1793.h \
     include/module_1793.h \
     include/wps_attack_module.h \
     include/datacommunicator.h \
-    include/global_variables_1793.h
+    include/global_variables_1793.h \
+    include/logger_1793.h \
+    include/app_controller_1793.h
 
 DISTFILES += \
     main_view.qml \
     qml/WPS_AttackForm.ui.qml \
     qml/fatal_message.qml \
     qml/main_view.qml \
-    qml/main_view_2.qml \
     qml/WPS Attack.qml \
-    qml/WPS_Attack.qml
+    qml/WPS_Attack.qml \
+    qml/LauncherViewForm.ui.qml \
+    qml/LauncherView.qml
 

@@ -6,7 +6,7 @@
 class WPS_Attack_module : public Module_1793
 {
 public:
-    explicit WPS_Attack_module(const QString& moduleName, const QString& fileName);
+    explicit WPS_Attack_module();
     ~WPS_Attack_module();
 };
 

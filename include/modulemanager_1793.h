@@ -1,7 +1,6 @@
 #ifndef MODULEMANAGER_1793_H
 #define MODULEMANAGER_1793_H
 
-#include <QDir>
 #include <QFile>
 #include <QObject>
 #include <QString>
@@ -10,6 +9,8 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
+#include "app_controller_1793.h"
+#include "logger_1793.h"
 #include "model_1793.h"
 #include "name_codes_1793.h"
 #include "wps_attack_module.h"
@@ -24,9 +25,12 @@ public:
     ModuleManager_1793();
     ~ModuleManager_1793();
 
-    QDir app_dir;
     Model_1793 *mainModel;
-    void start();
+
+    QString test;
+
+public slots:
+    void startLaunchRoutine();
 
 public: //modules
     WPS_Attack_module *wps_attack_module;
@@ -41,8 +45,7 @@ private:
      void delete_modules();
 
 signals:
-    void send_log_file(int, const QString&);
-    void quit_critical_sender();
+     void finishLaunchRoutine();
 };
 
 #endif // MODULEMANAGER_1793_H

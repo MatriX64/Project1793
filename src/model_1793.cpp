@@ -6,18 +6,13 @@ Model_1793::Model_1793()
 
 }
 
-Model_1793::Model_1793(Model_1793 *model)
-{
-    str = "Test";
-}
-
 Model_1793::~Model_1793()
 {
-    emit send_log_file(LogInfoMsg, "Модель уничтожена");
+    Logger_1793::write_log_file(LogInfoMsg, "Модель уничтожена");
 }
 
 void Model_1793::start()
 {
-    emit send_log_file(LogInfoMsg, "Модель запущена");
+    Logger_1793::write_log_file(LogInfoMsg, "Модель запущена");
     model = this;
 }

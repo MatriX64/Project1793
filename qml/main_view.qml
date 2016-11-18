@@ -17,40 +17,16 @@ Window {
                 anchors.fill: parent
                 Tab {
                     title: qsTr("wep/wpa/wpa2_attacks")
-                    TabView {
+                    WPS_Attack {
                         anchors.fill: parent
-                        Tab {
-                            title: qsTr("wps_attack")
-                            TabView {
-                                anchors.fill: parent
-                                Tab {
-                                    title: qsTr("eva")
-                                    WPS_Attack {
-                                        anchors.fill: parent
-                                    }
-                                }
-                            }
-                        }
                     }
                 }
-                Tab {
-                    title: qsTr("wps_attack")
-                    TabView {
-                        anchors.fill: parent
-                        Tab {
-                            title: qsTr("wep/wpa/wpa2_attacks")
-                            TabView {
-                                anchors.fill: parent
-                                Tab {
-                                    title: qsTr("eva")
-                                    WPS_Attack {
-                                        anchors.fill: parent
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+            }
+        }
+        Tab {
+            title: qsTr("testing")
+            WPS_Attack {
+                anchors.fill: parent
             }
         }
         Tab {
