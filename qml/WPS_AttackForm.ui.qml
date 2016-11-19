@@ -15,6 +15,6 @@ Item {
         transformOrigin: Item.Center
         anchors.fill: parent
         fillMode: Image.PreserveAspectFit
-        source: "../../../../Pictures/images.jpeg"
+        source: "qrc:/images/summer.jpeg"
     }
 }

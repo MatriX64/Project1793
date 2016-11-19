@@ -12,6 +12,6 @@ Item {
         anchors.bottomMargin: 0
         anchors.fill: parent
         fillMode: Image.PreserveAspectFit
-        source: "../../build-Project1793-Desktop_Qt_5_7_0_GCC_64bit-Debug/bin/images/waves.gif"
+        source: "qrc:/images/waves.gif"
     }
 }

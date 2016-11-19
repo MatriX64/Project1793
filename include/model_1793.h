@@ -7,7 +7,6 @@
 #include <QByteArray>
 #include <QVariant>
 
-#include "app_controller_1793.h"
 #include "logger_1793.h"
 #include "name_codes_1793.h"
 

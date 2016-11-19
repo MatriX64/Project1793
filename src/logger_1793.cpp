@@ -1,6 +1,6 @@
 #include "include/logger_1793.h"
 
-QFile Logger_1793::mLogFile("log");
+QFile Logger_1793::mLogFile;
 
 Logger_1793::Logger_1793()
 {
@@ -31,7 +31,8 @@ void Logger_1793::write_log_file(int type, const QString &msg)
 
 void Logger_1793::initialize()
 {
+    mLogFile.setFileName(QCoreApplication::applicationDirPath() + "/log");
     mLogFile.open(QIODevice::WriteOnly);
-
+    qDebug() << QCoreApplication::applicationDirPath() + "/log";
     write_log_file(LogInfoMsg, "(Logger)Logger initialized");
 }

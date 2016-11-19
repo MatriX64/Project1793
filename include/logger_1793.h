@@ -5,6 +5,8 @@
 #include <QFile>
 #include <QTextStream>
 #include <QDateTime>
+#include <QCoreApplication>
+#include <QDebug>
 
 #include "name_codes_1793.h"
 

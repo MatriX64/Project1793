@@ -14,23 +14,24 @@ ModuleManager_1793::~ModuleManager_1793()
 void ModuleManager_1793::startLaunchRoutine()
 {
     mainModel = model;
-    check_paths();
-    check_libs();
+    if (!check_paths())
+        return;
+    if (!check_libs())
+        return
     Logger_1793::write_log_file(LogInfoMsg, "Менеджер модулей запущен");
-    test = "Hello from thread";
     add_modules();
     set_modules();
 
     emit finishLaunchRoutine();
 }
 
-void ModuleManager_1793::check_paths()
+bool ModuleManager_1793::check_paths()
 {
     QProcess chpaths(this);
-    chpaths.start("chmod +x bin/scripts/chpaths.sh");
+    chpaths.start("chmod +x " + QCoreApplication::applicationDirPath() + "/bin/scripts/chpaths.sh");
     chpaths.waitForFinished();
 
-    chpaths.start("/bin/bash bin/scripts/chpaths.sh");
+    chpaths.start("/bin/bash " + QCoreApplication::applicationDirPath() +  "/bin/scripts/chpaths.sh");
     chpaths.waitForReadyRead();
     QString chpathsOutput = QTextCodec::codecForMib(106)->toUnicode(chpaths.readAll());
     qDebug() << chpathsOutput;
@@ -38,20 +39,22 @@ void ModuleManager_1793::check_paths()
     if (QString::compare(chpathsOutput, "complete\n", Qt::CaseSensitive))
     {
         Logger_1793::write_log_file(LogCriticalMsg, "Ошибка проверки целостности модулей");
-        AppController_1793::terminate_critical();
+        emit critical_error();
+        return false;
     } else
     {
         Logger_1793::write_log_file(LogInfoMsg, "Проверка наличия модулей прошла успешно");
     }
+    return true;
 }
 
-void ModuleManager_1793::check_libs()
+bool ModuleManager_1793::check_libs()
 {
     QProcess chlibs(this);
-    chlibs.start("chmod +x bin/scripts/chlibs.sh");
+    chlibs.start("chmod +x "+ QCoreApplication::applicationDirPath() + "/bin/scripts/chlibs.sh");
     chlibs.waitForFinished();
 
-    chlibs.start("/bin/bash bin/scripts/chlibs.sh");
+    chlibs.start("/bin/bash " + QCoreApplication::applicationDirPath() + "/bin/scripts/chlibs.sh");
     chlibs.waitForReadyRead();
     QString chlibsOutput = QTextCodec::codecForMib(106)->toUnicode(chlibs.readAll());
     qDebug() << chlibsOutput;
@@ -59,10 +62,13 @@ void ModuleManager_1793::check_libs()
     if (QString::compare(chlibsOutput, "complete\n", Qt::CaseSensitive))
     {
         Logger_1793::write_log_file(LogWarningMsg, "Не удалось корректно выполнить скрипт: bin/Scripts/chlibs.sh");
+        emit critical_error();
+        return false;
     } else
     {
         Logger_1793::write_log_file(LogInfoMsg, "Проверка наличия библиотек прошла успешно");
     }
+    return true;
 }
 
 void ModuleManager_1793::add_modules()
@@ -204,7 +210,10 @@ void ModuleManager_1793::set_modules()
 
     QFile main_view_file("/home/san/Qt/Projects/Project1793/qml/main_view.qml");
     if (!main_view_file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        qDebug() << "Cannot open main_view file";
         return;
+    }
     QString main_view_text = main_view_file.readAll();
     main_view_file.close();
 
@@ -216,7 +225,10 @@ void ModuleManager_1793::set_modules()
     {
         main_view_text.replace(regProcessMainViewText, str);
         if (!main_view_file.open(QIODevice::WriteOnly | QIODevice::Unbuffered))
+        {
+            qDebug() << "Cannot write changes to main_view file";
             return;
+        }
         QByteArray text = main_view_text.toUtf8();
         main_view_file.write(text);
         main_view_file.close();

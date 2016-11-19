@@ -27,8 +27,10 @@ private:
     ModuleManager_1793 *moduleManager;
     QQmlApplicationEngine *mainView;
     QQmlApplicationEngine *splashView;
+    QQmlApplicationEngine *fatalMessage;
 
 public slots:
+    void terminate_critical();
 };
 
 #endif // CORE_1793_H

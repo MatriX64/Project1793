@@ -5,8 +5,11 @@ import QtQuick.Controls 1.4
 Window {
     visible: true
     id: root
+    x: Screen.width / 2 - width / 2
+    y: Screen.height / 2 - height / 2
     width: 500
     height: 100
+    flags: Qt.FramelessWindowHint
     title: "Project1793. Ошибка"
 
     Text {

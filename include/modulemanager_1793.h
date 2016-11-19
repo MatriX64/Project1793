@@ -8,8 +8,8 @@
 #include <QProcess>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QCoreApplication>
 
-#include "app_controller_1793.h"
 #include "logger_1793.h"
 #include "model_1793.h"
 #include "name_codes_1793.h"
@@ -27,8 +27,6 @@ public:
 
     Model_1793 *mainModel;
 
-    QString test;
-
 public slots:
     void startLaunchRoutine();
 
@@ -38,14 +36,15 @@ public: //modules
     WPS_Attack_module *wps_attack_module3;
 
 private:
-     void check_paths();
-     void check_libs();
+     bool check_paths();
+     bool check_libs();
      void add_modules();
      void set_modules();
      void delete_modules();
 
 signals:
      void finishLaunchRoutine();
+     void critical_error();
 };
 
 #endif // MODULEMANAGER_1793_H
