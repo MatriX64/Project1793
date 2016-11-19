@@ -9,7 +9,7 @@ Window {
     width: 512
     height: 288
     color: "transparent"
-    flags: Qt.FramelessWindowHint
+    flags: Qt.SplashScreen
     title: "Project1793. Starting"
 
     LauncherViewForm {

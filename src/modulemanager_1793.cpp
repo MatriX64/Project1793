@@ -14,10 +14,8 @@ ModuleManager_1793::~ModuleManager_1793()
 void ModuleManager_1793::startLaunchRoutine()
 {
     mainModel = model;
-    if (!check_paths())
+    if (!check_packages())
         return;
-    if (!check_libs())
-        return
     Logger_1793::write_log_file(LogInfoMsg, "Менеджер модулей запущен");
     add_modules();
     set_modules();
@@ -25,48 +23,25 @@ void ModuleManager_1793::startLaunchRoutine()
     emit finishLaunchRoutine();
 }
 
-bool ModuleManager_1793::check_paths()
+bool ModuleManager_1793::check_packages()
 {
     QProcess chpaths(this);
-    chpaths.start("chmod +x " + QCoreApplication::applicationDirPath() + "/bin/scripts/chpaths.sh");
+    chpaths.start("chmod +x " + QCoreApplication::applicationDirPath() + "/scripts/checkpkgs.sh");
     chpaths.waitForFinished();
 
-    chpaths.start("/bin/bash " + QCoreApplication::applicationDirPath() +  "/bin/scripts/chpaths.sh");
+    chpaths.start("/bin/bash " + QCoreApplication::applicationDirPath() +  "/scripts/checkpkgs.sh");
     chpaths.waitForReadyRead();
     QString chpathsOutput = QTextCodec::codecForMib(106)->toUnicode(chpaths.readAll());
     qDebug() << chpathsOutput;
     chpaths.waitForFinished();
     if (QString::compare(chpathsOutput, "complete\n", Qt::CaseSensitive))
     {
-        Logger_1793::write_log_file(LogCriticalMsg, "Ошибка проверки целостности модулей");
+        Logger_1793::write_log_file(LogCriticalMsg, "Ошибка проверки наличия необходимых пакетов");
         emit critical_error();
         return false;
     } else
     {
-        Logger_1793::write_log_file(LogInfoMsg, "Проверка наличия модулей прошла успешно");
-    }
-    return true;
-}
-
-bool ModuleManager_1793::check_libs()
-{
-    QProcess chlibs(this);
-    chlibs.start("chmod +x "+ QCoreApplication::applicationDirPath() + "/bin/scripts/chlibs.sh");
-    chlibs.waitForFinished();
-
-    chlibs.start("/bin/bash " + QCoreApplication::applicationDirPath() + "/bin/scripts/chlibs.sh");
-    chlibs.waitForReadyRead();
-    QString chlibsOutput = QTextCodec::codecForMib(106)->toUnicode(chlibs.readAll());
-    qDebug() << chlibsOutput;
-    chlibs.waitForFinished();
-    if (QString::compare(chlibsOutput, "complete\n", Qt::CaseSensitive))
-    {
-        Logger_1793::write_log_file(LogWarningMsg, "Не удалось корректно выполнить скрипт: bin/Scripts/chlibs.sh");
-        emit critical_error();
-        return false;
-    } else
-    {
-        Logger_1793::write_log_file(LogInfoMsg, "Проверка наличия библиотек прошла успешно");
+        Logger_1793::write_log_file(LogInfoMsg, "Проверка наличия необходимых пакетов прошла успешно");
     }
     return true;
 }

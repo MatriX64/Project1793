@@ -36,8 +36,7 @@ public: //modules
     WPS_Attack_module *wps_attack_module3;
 
 private:
-     bool check_paths();
-     bool check_libs();
+     bool check_packages();
      void add_modules();
      void set_modules();
      void delete_modules();

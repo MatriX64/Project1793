@@ -9,7 +9,7 @@ Window {
     y: Screen.height / 2 - height / 2
     width: 500
     height: 100
-    flags: Qt.FramelessWindowHint
+    flags: Qt.SplashScreen
     title: "Project1793. Ошибка"
 
     Text {
