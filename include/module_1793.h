@@ -4,20 +4,29 @@
 #include <QString>
 #include <QRegularExpression>
 #include <QDebug>
+#include <QObject>
+#include <QPointer>
+#include <QThread>
 
-#include "datacommunicator.h"
+#include "model_1793.h"
 
-class Module_1793 : public DataCommunicator
+class Module_1793 : public QObject
 {
     Q_OBJECT
 public:
-    explicit Module_1793();
+    explicit Module_1793(QQmlApplicationEngine *engine, QObject *parent = 0);
     ~Module_1793();
 
-    Model_1793 *mainModel;
-
 public:
-    void add_module_to_layout(const QString& moduleName, const QString &fileName);
+    static QObject* qmlSignals;
+    void add_module(QObject *moduleObject);
+
+public slots:
+    void start_modules();
+
+private:
+    QList<QObject*>* modulesList = new QList<QObject*>;
+    QObject *moduleObjectHandler;
 };
 
 #endif // MODULE_1793_H

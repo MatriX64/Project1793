@@ -2,7 +2,7 @@
 
 QFile Logger_1793::mLogFile;
 
-Logger_1793::Logger_1793()
+Logger_1793::Logger_1793(QObject *parent) : QObject(parent)
 {
 
 }

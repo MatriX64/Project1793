@@ -3,9 +3,6 @@
         <file>qml/fatal_message.qml</file>
         <file>qml/LauncherView.qml</file>
         <file>qml/LauncherViewForm.ui.qml</file>
-        <file>qml/main_view.qml</file>
-        <file>qml/WPS_Attack.qml</file>
-        <file>qml/WPS_AttackForm.ui.qml</file>
         <file>images/summer.jpeg</file>
         <file>images/waves.gif</file>
     </qresource>

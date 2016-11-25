@@ -16,14 +16,12 @@ class Model_1793 : public QObject
 {
     Q_OBJECT
 public:
-    Model_1793();
-    Model_1793(Model_1793*);
+    Model_1793(QObject* parent = 0);
     ~Model_1793();
 
 public:
-    QStringList networkList;
-    QMap<QString,QString> qmlTabView;
-    QString str;
+    static QStringList networkList;
+    static QMap<QString,QString> qmlTabView;
 
 public:
     void start();

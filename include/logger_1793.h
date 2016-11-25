@@ -10,10 +10,11 @@
 
 #include "name_codes_1793.h"
 
-class Logger_1793
+class Logger_1793 : public QObject
 {
+    Q_OBJECT
 public:
-    Logger_1793();
+    Logger_1793(QObject* parent = 0);
     ~Logger_1793();
 
 public:

@@ -2,7 +2,7 @@ TEMPLATE = app
 
 QT += qml quick
 
-CONFIG += c++11
+CONFIG += c++14
 
 SOURCES += src/core_1793.cpp \
     src/main.cpp \
@@ -10,9 +10,9 @@ SOURCES += src/core_1793.cpp \
     src/modulemanager_1793.cpp \
     src/module_1793.cpp \
     src/wps_attack_module.cpp \
-    src/datacommunicator.cpp \
-    src/global_variables_1793.cpp \
-    src/logger_1793.cpp
+    src/logger_1793.cpp \
+    src/initializer_1793.cpp \
+    src/dummymodule.cpp
 
 RESOURCES += \
     resfile.qrc
@@ -29,7 +29,14 @@ HEADERS += include/core_1793.h \
     include/name_codes_1793.h \
     include/module_1793.h \
     include/wps_attack_module.h \
-    include/datacommunicator.h \
-    include/global_variables_1793.h \
-    include/logger_1793.h
+    include/logger_1793.h \
+    include/initializer_1793.h \
+    include/dummymodule.h
+
+DISTFILES += \
+    ../build-Project1793-Desktop_Qt_5_7_0_GCC_64bit-Debug/qml/WPS_AttackForm.ui.qml \
+    ../build-Project1793-Desktop_Qt_5_7_0_GCC_64bit-Debug/qml/main_view.qml \
+    ../build-Project1793-Desktop_Qt_5_7_0_GCC_64bit-Debug/qml/WPS_Attack.qml \
+    ../build-Project1793-Desktop_Qt_5_7_0_GCC_64bit-Debug/qml/ModuleDummy.qml \
+    ../build-Project1793-Desktop_Qt_5_7_0_GCC_64bit-Debug/qml/DummyQML.qml
 
