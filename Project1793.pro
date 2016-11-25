@@ -37,4 +37,5 @@ DISTFILES += \
     qml/WPS_AttackForm.ui.qml \
     qml/main_view.qml \
     qml/WPS_Attack.qml \
-    qml/DummyQML.qml
+    qml/DummyQML.qml \
+    scripts/checkpkgs.sh
