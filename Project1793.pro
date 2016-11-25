@@ -34,9 +34,7 @@ HEADERS += include/core_1793.h \
     include/dummymodule.h
 
 DISTFILES += \
-    ../build-Project1793-Desktop_Qt_5_7_0_GCC_64bit-Debug/qml/WPS_AttackForm.ui.qml \
-    ../build-Project1793-Desktop_Qt_5_7_0_GCC_64bit-Debug/qml/main_view.qml \
-    ../build-Project1793-Desktop_Qt_5_7_0_GCC_64bit-Debug/qml/WPS_Attack.qml \
-    ../build-Project1793-Desktop_Qt_5_7_0_GCC_64bit-Debug/qml/ModuleDummy.qml \
-    ../build-Project1793-Desktop_Qt_5_7_0_GCC_64bit-Debug/qml/DummyQML.qml
-
+    qml/WPS_AttackForm.ui.qml \
+    qml/main_view.qml \
+    qml/WPS_Attack.qml \
+    qml/DummyQML.qml

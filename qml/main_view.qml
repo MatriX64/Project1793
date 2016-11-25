@@ -1,3 +1,8 @@
+//This is main view window
+//You can add and change lines before and after <//start_inp..//end_inp..>
+//Please do not touch this words
+//Because this is beacons for parser
+
 import QtQuick 2.7
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
@@ -7,7 +12,12 @@ Window {
     id: root
     width: 900
     height: 700
-    title: qsTr("Project1793. Главное окно")
+    title: qsTr("Project1793. Main Window")
+
+    //signals of modules here:
+    signal qmlScream()
+    signal signalDummy()
+
 //start_input
     TabView {
         anchors.fill: parent
@@ -24,14 +34,8 @@ Window {
             }
         }
         Tab {
-            title: qsTr("testing")
-            WPS_Attack {
-                anchors.fill: parent
-            }
-        }
-        Tab {
             title: qsTr("crypt_test")
-            WPS_Attack {
+            DummyQML {
                 anchors.fill: parent
             }
         }
