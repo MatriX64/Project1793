@@ -27,14 +27,25 @@ bool Initializer_1793::check_packages()
     QString chpathsOutput = QTextCodec::codecForMib(106)->toUnicode(chpaths.readAll());
 
     chpaths.waitForFinished();
-    if (QString::compare(chpathsOutput, "complete\n", Qt::CaseSensitive))
+    if (!QString::compare(chpathsOutput, "complete\n", Qt::CaseSensitive))
     {
-        Logger_1793::write_log_file(LogCriticalMsg, "Ошибка проверки наличия необходимых пакетов");
+        Logger_1793::write_log_file(LogCriticalMsg, "Проверка наличия необходимых для запуска данных прошла успешно");
+        return true;
+    } else if (!QString::compare(chpathsOutput, "nroot\n", Qt::CaseSensitive))
+    {
+        Logger_1793::write_log_file(LogInfoMsg, "Ошибка. Пожалуйста, запустите программу от root пользователя");
+        emit critical_error();
+        return false;
+    } else if (!QString::compare(chpathsOutput, "adenied\n", Qt::CaseSensitive))
+    {
+        Logger_1793::write_log_file(LogInfoMsg, "Ошибка. Не получены необходимые права доступа");
         emit critical_error();
         return false;
     } else
     {
-        Logger_1793::write_log_file(LogInfoMsg, "Проверка наличия необходимых пакетов прошла успешно");
+        Logger_1793::write_log_file(LogInfoMsg, "Ошибка при работе с checkpkgs.sh скриптом");
+        emit critical_error();
+        return false;
     }
     return true;
 }
@@ -51,8 +62,8 @@ bool Initializer_1793::generate_main_view()
 //custom TabView path
 void Initializer_1793::add_module_layouts()
 {
-    new_module_layout("password_attacks|wep/wpa/wpa2_attacks", "WPS_Attack");
-    new_module_layout("crypt_test", "DummyQML");
+    Initializer_1793::new_module_layout("password_attacks|wep/wpa/wpa2_attacks", "WPS_Attack");
+    Initializer_1793::new_module_layout("test_module", "DummyQML");
 }
 
 void Initializer_1793::new_module_layout(const QString &moduleName, const QString &fileName)
@@ -207,8 +218,8 @@ bool Initializer_1793::set_modules()
     //this object will contain full TabView hierarchy
     QJsonObject root;
     root.insert("3TabView", mainHierarchy.first());
-    qDebug() << "ColumnCount:" << maxElement;
-    qDebug() << keysList;
+    //qDebug() << "ColumnCount:" << maxElement;
+    //qDebug() << keysList;
 
     //convert json to qstring
     QJsonDocument doc(root);
@@ -267,7 +278,7 @@ bool Initializer_1793::set_modules()
         main_view_file.close();
         qDebug() << "main_view.qml was rewrited";
     }
-    qDebug() << "TabView created successfully";
+    //qDebug() << "TabView created successfully";
 
     return true;
 }

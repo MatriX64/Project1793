@@ -1,10 +1,10 @@
 #include "include/module_1793.h"
 
-QObject* Module_1793::qmlSignals;
+QObject*               Module_1793::qmlRootObjectHandler;
 
 Module_1793::Module_1793(QQmlApplicationEngine *engine, QObject *parent) : QObject(parent)
 {
-    qmlSignals = engine->rootObjects().first();
+    qmlRootObjectHandler = engine->rootObjects().first();
 }
 
 Module_1793::~Module_1793()

@@ -33,6 +33,6 @@ void Logger_1793::initialize()
 {
     mLogFile.setFileName(QCoreApplication::applicationDirPath() + "/log");
     mLogFile.open(QIODevice::WriteOnly);
-    qDebug() << QCoreApplication::applicationDirPath() + "/log";
+    //qDebug() << QCoreApplication::applicationDirPath() + "/log";
     write_log_file(LogInfoMsg, "(Logger)Logger initialized");
 }

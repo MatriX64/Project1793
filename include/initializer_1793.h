@@ -25,8 +25,9 @@ private:
     bool check_packages();
     bool generate_main_view();
     void add_module_layouts();
-    void new_module_layout(const QString &moduleName, const QString &fileName);
     bool set_modules();
+
+    static void new_module_layout(const QString &moduleName, const QString &fileName);
 
 signals:
     void critical_error();

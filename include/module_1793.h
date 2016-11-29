@@ -18,7 +18,7 @@ public:
     ~Module_1793();
 
 public:
-    static QObject* qmlSignals;
+    static QObject* qmlRootObjectHandler;
     void add_module(QObject *moduleObject);
 
 public slots:

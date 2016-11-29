@@ -2,7 +2,7 @@
 
 DummyModule::DummyModule(QObject *parent) : QObject(parent)
 {
-    connect(Module_1793::qmlSignals, SIGNAL(signalDummy()), this, SLOT(qmlSignalHandler()));
+    connect(Module_1793::qmlRootObjectHandler, SIGNAL(signalDummy()), this, SLOT(qmlSignalHandler()));
 }
 
 void DummyModule::qmlSignalHandler()

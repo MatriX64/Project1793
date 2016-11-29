@@ -12,7 +12,9 @@ SOURCES += src/core_1793.cpp \
     src/wps_attack_module.cpp \
     src/logger_1793.cpp \
     src/initializer_1793.cpp \
-    src/dummymodule.cpp
+    src/dummymodule.cpp \
+    src/network.cpp \
+    src/wpsnetworklistmodel.cpp
 
 RESOURCES += \
     resfile.qrc
@@ -31,11 +33,14 @@ HEADERS += include/core_1793.h \
     include/wps_attack_module.h \
     include/logger_1793.h \
     include/initializer_1793.h \
-    include/dummymodule.h
+    include/dummymodule.h \
+    include/network.h \
+    include/wpsnetworklistmodel.h
 
 DISTFILES += \
     qml/WPS_AttackForm.ui.qml \
     qml/main_view.qml \
     qml/WPS_Attack.qml \
+    scripts/checkpkgs.sh \
     qml/DummyQML.qml \
-    scripts/checkpkgs.sh
+    qml/DummyQMLForm.ui.qml

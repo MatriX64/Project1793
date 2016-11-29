@@ -21,8 +21,8 @@ void Core_1793::start()
 {
     //qDebug() << "Current thread:" << QThread::currentThread();
     logger = new Logger_1793(this);
-    model = new Model_1793(this);
     mainView = new QQmlApplicationEngine(this);
+    model = new Model_1793(mainView, this);
     splashView = new QQmlApplicationEngine(this);
     initializer = new Initializer_1793;
 

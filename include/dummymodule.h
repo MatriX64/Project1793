@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QQmlApplicationEngine>
+#include <QStringList>
+#include <QQmlComponent>
 #include <QThread>
 #include <QDebug>
 

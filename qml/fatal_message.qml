@@ -14,6 +14,9 @@ Window {
 
     Text {
         text: qsTr("Фатальная ошибка. Смотрите лог файл")
+        font.family: "Helvetica"
+        font.pointSize: 17
+        color: "black"
     }
 
     signal quit_signal()

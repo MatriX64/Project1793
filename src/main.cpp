@@ -1,5 +1,4 @@
 #include "include/core_1793.h"
-#include <QDir>
 
 int main(int argc, char *argv[])
 {
