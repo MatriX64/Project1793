@@ -8,7 +8,7 @@
 #include <QPointer>
 #include <QThread>
 
-#include "model_1793.h"
+#include "app_data/model_1793.h"
 
 class Module_1793 : public QObject
 {

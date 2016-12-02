@@ -5,6 +5,7 @@ Item {
     id: item1
     width: 400
     height: 400
+    property alias wpsStdOut: wpsStdOut
     property alias wpsRefreshInterfacesList: wpsRefreshInterfacesList
     property alias wpsInterfacesList: wpsInterfacesList
     property alias wpsStopAttack: wpsStopAttack
@@ -15,16 +16,14 @@ Item {
 
     Button {
         id: wpsStartAttack
-        width: 117
-        height: 33
         text: qsTr("Start attack")
         anchors.right: wpsStopAttack.left
+        anchors.rightMargin: 6
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.top: wpsRefreshNetworksList.bottom
         anchors.leftMargin: 8
         anchors.bottomMargin: 8
-        anchors.rightMargin: 6
         anchors.topMargin: 6
     }
 
@@ -60,28 +59,25 @@ Item {
 
     Button {
         id: wpsStopAttack
-        width: 117
-        height: 33
+        x: 123
+        width: 119
         text: qsTr("Stop attack")
-        anchors.left: wpsStartAttack.right
-        anchors.right: wpsStdOut.left
-        anchors.bottom: parent.bottom
         anchors.top: wpsStopRefreshingNetworksList.bottom
-        anchors.bottomMargin: 8
-        anchors.leftMargin: 6
-        anchors.rightMargin: 6
         anchors.topMargin: 6
+        anchors.right: wpsStdOut.left
+        anchors.rightMargin: 6
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 8
     }
 
     Button {
         id: wpsRefreshNetworksList
-        height: 33
         text: qsTr("Refresh")
         anchors.right: wpsStopRefreshingNetworksList.left
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.top: wpsNetworksList.bottom
-        anchors.bottomMargin: 49
+        anchors.bottomMargin: 47
         anchors.leftMargin: 8
         anchors.rightMargin: 6
         anchors.topMargin: 6
@@ -97,6 +93,7 @@ Item {
         anchors.leftMargin: 8
         anchors.rightMargin: 6
         anchors.topMargin: 8
+        model: interfacesListModel
     }
 
     Text {
@@ -126,7 +123,7 @@ Item {
         id: wpsStopRefreshingNetworksList
         text: qsTr("Stop refreshing")
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 49
+        anchors.bottomMargin: 47
         anchors.left: parent.left
         anchors.leftMargin: 123
         anchors.top: wpsNetworksList.bottom

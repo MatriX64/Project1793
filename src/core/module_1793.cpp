@@ -1,4 +1,4 @@
-#include "include/module_1793.h"
+#include "module_1793.h"
 
 QObject*               Module_1793::qmlRootObjectHandler;
 
@@ -23,6 +23,7 @@ void Module_1793::start_modules()
     {
         QPointer<QThread> moduleThread = new QThread;
         modulesList->at(i)->moveToThread(moduleThread);
+        connect(moduleThread, SIGNAL(started()), modulesList->at(i), SLOT(startup_initialization()));
         connect(this, SIGNAL(destroyed()), moduleThread, SLOT(quit()));
         moduleThread->start();
     }

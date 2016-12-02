@@ -1,4 +1,4 @@
-#include "include/logger_1793.h"
+#include "logger_1793.h"
 
 QFile Logger_1793::mLogFile;
 

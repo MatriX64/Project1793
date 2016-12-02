@@ -1,4 +1,4 @@
-#include "include/initializer_1793.h"
+#include "initializer_1793.h"
 
 Initializer_1793::Initializer_1793(QObject *parent) : QObject(parent)
 {
@@ -62,8 +62,8 @@ bool Initializer_1793::generate_main_view()
 //custom TabView path
 void Initializer_1793::add_module_layouts()
 {
-    Initializer_1793::new_module_layout("password_attacks|wep/wpa/wpa2_attacks", "WPS_Attack");
-    Initializer_1793::new_module_layout("test_module", "DummyQML");
+    Initializer_1793::new_module_layout("password_attacks|wep/wpa/wpa2_attacks|wps_attack", "WPS_Attack");
+    Initializer_1793::new_module_layout("password_attacks|test_module", "DummyQML");
 }
 
 void Initializer_1793::new_module_layout(const QString &moduleName, const QString &fileName)
@@ -72,7 +72,13 @@ void Initializer_1793::new_module_layout(const QString &moduleName, const QStrin
     {
         qDebug() << "Error in file name";
         return;
+    } else if (Model_1793::modulesList.contains(fileName))
+    {
+        qDebug() << "MainView already contains module " + fileName;
+        return;
     }
+
+    Model_1793::modulesList.append(fileName);
 
     QStringList modulePath;
     modulePath = moduleName.split("|");
@@ -249,7 +255,7 @@ bool Initializer_1793::set_modules()
     tabViewString.replace(changeExp, "\"");
 
     //read main QML file
-    QFile main_view_file(QCoreApplication::applicationDirPath() + "/qml/main_view.qml");
+    QFile main_view_file(QCoreApplication::applicationDirPath() + "/src/modules/interfaces/main_view.qml");
     if (!main_view_file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         Logger_1793::write_log_file(LogCriticalMsg, "Cannot open main_view.qml file");

@@ -1,4 +1,4 @@
-#include "include/modulemanager_1793.h"
+#include "modulemanager_1793.h"
 
 ModuleManager_1793::ModuleManager_1793(QQmlApplicationEngine *engine, QObject *parent) : QObject(parent),
                                                                                          moduleController(engine, this)

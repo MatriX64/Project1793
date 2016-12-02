@@ -10,9 +10,10 @@
 #include <QVariant>
 #include <QThread>
 
-#include "logger_1793.h"
-#include "name_codes_1793.h"
+#include "../logger_1793.h"
+#include "../name_codes_1793.h"
 #include "wpsnetworklistmodel.h"
+#include "interfacesmodel.h"
 
 #include <QDebug>
 
@@ -25,16 +26,22 @@ public:
     static Model_1793* model;
 
 private: //modules data
-    WPSNetworkListModel networskList;
+    WPSNetworkListModel networksList;
+    InterfacesModel interfacesList;
+
 
 public:
     void start();
 
 public slots: //modules data slots
     void add_new_network(const Network &network);
+    void clear_WPS_networks_list();
+    void add_new_interface(const QString &interface);
+    void clear_interfaces_list();
 
 public: //sysyem data
     static QMap<QString,QString> qmlTabView;
+    static QList<QString> modulesList;
 };
 
 #endif // MODEL_1793_H

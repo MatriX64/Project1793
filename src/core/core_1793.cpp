@@ -1,4 +1,4 @@
-#include "include/core_1793.h"
+#include "core_1793.h"
 
 Core_1793::Core_1793(QObject *parent) : QObject(parent)
 {
@@ -29,7 +29,7 @@ void Core_1793::start()
     logger->initialize();
     model->start();
 
-    splashView->load(QUrl("qrc:/qml/LauncherView.qml"));
+    splashView->load(QUrl("qrc:/src/core/interfaces/LauncherView.qml"));
 
     QEventLoop launchViewLoop;
     QThread *launchThread = new QThread;
@@ -45,7 +45,7 @@ void Core_1793::start()
     launchThread->start();
     launchViewLoop.exec();
 
-    mainView->load(QCoreApplication::applicationDirPath() + "/qml/main_view.qml");
+    mainView->load(QCoreApplication::applicationDirPath() + "/src/modules/interfaces/main_view.qml");
 
     moduleManager = new ModuleManager_1793(mainView, this);
     moduleManager->start();
@@ -54,7 +54,7 @@ void Core_1793::start()
 void Core_1793::terminate_critical()
 {
     fatalMessage = new QQmlApplicationEngine;
-    fatalMessage->load(QUrl("qrc:/qml/fatal_message.qml"));
+    fatalMessage->load(QUrl("qrc:/src/core/interfaces/fatal_message.qml"));
     QEventLoop wait;
     QObject *item = fatalMessage->rootObjects().first();
     connect(item, SIGNAL(quit_signal()), &wait, SLOT(quit()));

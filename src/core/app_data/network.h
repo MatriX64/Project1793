@@ -11,9 +11,11 @@ public:
     Network(const QString &name);
 
     QString name() const;
+    QString mac() const;
 
 private:
     QString m_name;
+    QString m_mac;
 };
 
 Q_DECLARE_METATYPE(Network)

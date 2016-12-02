@@ -1,4 +1,4 @@
-#include "include/wpsnetworklistmodel.h"
+#include "wpsnetworklistmodel.h"
 
 
 WPSNetworkListModel::WPSNetworkListModel(QObject *parent) : QAbstractListModel(parent)
@@ -11,6 +11,13 @@ void WPSNetworkListModel::addNetwork(const Network &network)
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
     networkList << network;
     endInsertRows();
+}
+
+void WPSNetworkListModel::clearList()
+{
+    beginRemoveRows(QModelIndex(), rowCount(), rowCount());
+    networkList.clear();
+    endRemoveRows();
 }
 
 int WPSNetworkListModel::rowCount(const QModelIndex &parent) const
@@ -26,6 +33,8 @@ QVariant WPSNetworkListModel::data(const QModelIndex &index, int role) const
     const Network &network = networkList[index.row()];
     if (role == NetworkName)
         return network.name();
+    else if (role == NetworkMac)
+        return network.mac();
     return QVariant();
 }
 
@@ -33,5 +42,6 @@ QHash<int, QByteArray> WPSNetworkListModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
     roles[NetworkName] = "name";
+    roles[NetworkMac] = "mac";
     return roles;
 }

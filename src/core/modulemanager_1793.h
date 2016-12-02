@@ -7,13 +7,13 @@
 #include <QCoreApplication>
 
 #include "logger_1793.h"
-#include "model_1793.h"
+#include "app_data/model_1793.h"
 #include "name_codes_1793.h"
-#include "model_1793.h"
+#include "app_data/model_1793.h"
 
 //modules
-#include "wps_attack_module.h"
-#include "dummymodule.h"
+#include "../modules/wps_attack_module.h"
+#include "../modules/dummymodule.h"
 
 #include <QDebug>
 

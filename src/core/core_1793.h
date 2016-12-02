@@ -6,7 +6,7 @@
 #include <QEventLoop>
 
 #include "modulemanager_1793.h"
-#include "model_1793.h"
+#include "app_data/model_1793.h"
 #include "name_codes_1793.h"
 #include "logger_1793.h"
 #include "initializer_1793.h"

@@ -14,10 +14,12 @@ public:
 
 public:
     enum NetworkRoles {
-        NetworkName = Qt::UserRole + 1
+        NetworkName = Qt::UserRole + 1,
+        NetworkMac
     };
 
     void addNetwork(const Network &network);
+    void clearList();
 
     int rowCount(const QModelIndex & parent = QModelIndex()) const;
 

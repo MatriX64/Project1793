@@ -18,7 +18,7 @@ Window {
 
     //global signals:
     signal signal_Refresh_interfaces_list()
-    signal signal_Refresh_WPS_list()
+    signal signal_Refresh_WPS_list(string msg)
     signal signal_Stop_refreshing_WPS_list()
     signal signalDummy()
 
@@ -31,16 +31,22 @@ Window {
                 anchors.fill: parent
                 Tab {
                     title: qsTr("wep/wpa/wpa2_attacks")
-                    WPS_Attack {
+                    TabView {
+                        anchors.fill: parent
+                        Tab {
+                            title: qsTr("wps_attack")
+                            WPS_Attack {
+                                anchors.fill: parent
+                            }
+                        }
+                    }
+                }
+                Tab {
+                    title: qsTr("test_module")
+                    DummyQML {
                         anchors.fill: parent
                     }
                 }
-            }
-        }
-        Tab {
-            title: qsTr("crypt_test")
-            DummyQML {
-                anchors.fill: parent
             }
         }
     }

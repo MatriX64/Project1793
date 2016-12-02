@@ -5,6 +5,8 @@ WPS_AttackForm {
     objectName: "wpsAttackModule"
 
     property var networkName: ""
+    property var networkMac: ""
+    property var interfaceName: ""
 
     Component {
         id: wpsNetworksListDelegate
@@ -12,6 +14,7 @@ WPS_AttackForm {
             id: wrapper
             width: 200; height: 20
             Text { text: 'Name: ' + name }
+            Text { text: 'Mac: ' + mac }
 
             states: State {
                 name: "currentItem"
@@ -27,7 +30,10 @@ WPS_AttackForm {
                     wrapper.ListView.view.currentIndex = index
                 }
             }
-            onStateChanged: networkName = name
+            onStateChanged: {
+                networkName = name
+                networkMac = mac
+            }
         }
     }
 
@@ -36,7 +42,7 @@ WPS_AttackForm {
     }
 
     function refresh_WPS_list() {
-        signal_Refresh_WPS_list()
+        signal_Refresh_WPS_list(interfaceName)
         wpsRefreshNetworksList.checkable = true
         wpsRefreshNetworksList.checked = true
         wpsRefreshNetworksList.enabled = false
@@ -53,7 +59,6 @@ WPS_AttackForm {
         wpsInterfacesList.enabled = true
         wpsNetworksList.enabled = true
         console.log("Refreshing WPS list stopped")
-
     }
 
     function start_WPS_attack() {
@@ -66,6 +71,13 @@ WPS_AttackForm {
         wpsStartAttack.checkable = false
     }
 
+    function append_stdout_text(message) {
+        wpsStdOut.append(message)
+    }
+
+    wpsInterfacesList.onCurrentTextChanged: {
+        interfaceName = wpsInterfacesList.textAt(wpsInterfacesList.currentIndex)
+    }
     wpsRefreshInterfacesList.onClicked: refresh_Interfaces_list()
     wpsStartAttack.onClicked: start_WPS_attack()
     wpsStopAttack.onClicked: stop_WPS_attack()
@@ -75,7 +87,6 @@ WPS_AttackForm {
     anchors.fill: parent
 
     Component.onCompleted: {
-        signal_Refresh_interfaces_list()
-        console.log("WPS attack module initialized")
+        console.log("Moule WPS_Attack loaded")
     }
 }

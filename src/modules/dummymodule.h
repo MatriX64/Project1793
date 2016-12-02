@@ -8,7 +8,7 @@
 #include <QThread>
 #include <QDebug>
 
-#include "module_1793.h"
+#include "../core/module_1793.h"
 
 class DummyModule : public QObject
 {
@@ -17,6 +17,8 @@ public:
     DummyModule(QObject *parent = 0);
 
 public slots:
+    void startup_initialization();
+
     void qmlSignalHandler();
 };
 
