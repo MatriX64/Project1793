@@ -9,7 +9,7 @@
 * reaver-wps (version 1.5.3 or later) -> <https://github.com/t6x/reaver-wps-fork-t6x>
 *  Qt (version 5.7 or later) -> <https://www.qt.io>
 
-_This version tested on [Ubuntu](https://www.kali.org/) operating system ._
+_This version tested on `Ubuntu` operating system ._
 - - -
 
 # Setup
