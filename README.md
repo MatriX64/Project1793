@@ -32,4 +32,4 @@ make
 - - -
 
 ### Usage
-_Root privileges is required ._
+_Root privileges are required ._
