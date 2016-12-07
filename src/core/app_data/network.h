@@ -8,7 +8,7 @@ class Network
 {
 public:
     Network();
-    Network(const QString &name);
+    Network(const QString &name, const QString &mac);
 
     QString name() const;
     QString mac() const;

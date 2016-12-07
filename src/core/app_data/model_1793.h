@@ -11,7 +11,6 @@
 #include <QThread>
 
 #include "../logger_1793.h"
-#include "../name_codes_1793.h"
 #include "wpsnetworklistmodel.h"
 #include "interfacesmodel.h"
 

@@ -18,6 +18,8 @@ class Initializer_1793 : public QObject
 public:
     explicit Initializer_1793(QObject *parent = 0);
 
+    bool initializer_status;
+
 public slots:
     void initialize();
 
@@ -30,7 +32,6 @@ private:
     static void new_module_layout(const QString &moduleName, const QString &fileName);
 
 signals:
-    void critical_error();
     void finish_initialization();
 
 public slots:

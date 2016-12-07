@@ -17,9 +17,12 @@ Window {
     title: qsTr("Project1793. Main Window")
 
     //global signals:
+    //wps_attack_module
     signal signal_Refresh_interfaces_list()
     signal signal_Refresh_WPS_list(string msg)
     signal signal_Stop_refreshing_WPS_list()
+    signal signal_Start_WPS_attack(string interf, string essid, string bssid)
+    signal signal_Stop_WPS_attack()
     signal signalDummy()
 
 //start_input

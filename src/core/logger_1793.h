@@ -1,14 +1,18 @@
 #ifndef LOGGER_1793_H
 #define LOGGER_1793_H
 
+#define LogInfoMsg     0
+#define LogDebugMsg    1
+#define LogWarningMsg  2
+#define LogCriticalMsg 3
+#define LogFatalMsg    4
+
 #include <QString>
 #include <QFile>
 #include <QTextStream>
 #include <QDateTime>
 #include <QCoreApplication>
 #include <QDebug>
-
-#include "name_codes_1793.h"
 
 class Logger_1793 : public QObject
 {

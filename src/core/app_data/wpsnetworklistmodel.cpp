@@ -15,9 +15,9 @@ void WPSNetworkListModel::addNetwork(const Network &network)
 
 void WPSNetworkListModel::clearList()
 {
-    beginRemoveRows(QModelIndex(), rowCount(), rowCount());
+    beginResetModel();
     networkList.clear();
-    endRemoveRows();
+    endResetModel();
 }
 
 int WPSNetworkListModel::rowCount(const QModelIndex &parent) const

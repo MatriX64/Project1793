@@ -21,6 +21,6 @@ elif [ -z "${USERID}" ]; then
         printf "adenied\n"
 fi
 
-sleep 3
+sleep 6
 
 printf "complete\n"

@@ -2,6 +2,7 @@
 #define MODULE_1793_H
 
 #include <QString>
+#include <QGuiApplication>
 #include <QRegularExpression>
 #include <QDebug>
 #include <QObject>
@@ -23,9 +24,14 @@ public:
 
 public slots:
     void start_modules();
+    void terminate_modules();
+
+signals:
+    void terminate_module_signal();
 
 private:
     QList<QObject*>* modulesList = new QList<QObject*>;
+    QList<QThread*>* threadList  = new QList<QThread*>;
     QObject *moduleObjectHandler;
 };
 

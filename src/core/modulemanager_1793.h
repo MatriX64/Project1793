@@ -8,7 +8,6 @@
 
 #include "logger_1793.h"
 #include "app_data/model_1793.h"
-#include "name_codes_1793.h"
 #include "app_data/model_1793.h"
 
 //modules
@@ -23,7 +22,7 @@ class ModuleManager_1793 : public QObject
 public:
     ModuleManager_1793(QQmlApplicationEngine *engine, QObject *parent);
     ~ModuleManager_1793();
-private:
+public:
     Module_1793 moduleController;
 
 public:
@@ -36,9 +35,6 @@ public: //modules
 private:
     void process_modules();
     void delete_modules();
-
-signals:
-    void critical_error();
 };
 
 #endif // MODULEMANAGER_1793_H

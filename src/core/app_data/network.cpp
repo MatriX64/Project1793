@@ -5,7 +5,8 @@ Network::Network()
 
 }
 
-Network::Network(const QString &name) : m_name(name)
+Network::Network(const QString &name, const QString &mac) : m_name(name),
+                                                            m_mac(mac)
 {
 
 }

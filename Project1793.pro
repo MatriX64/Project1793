@@ -37,7 +37,6 @@ HEADERS += \
     src/core/logger_1793.h \
     src/core/module_1793.h \
     src/core/modulemanager_1793.h \
-    src/core/name_codes_1793.h \
     src/modules/dummymodule.h \
     src/modules/wps_attack_module.h
 

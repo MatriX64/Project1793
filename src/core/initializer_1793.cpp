@@ -8,11 +8,19 @@ Initializer_1793::Initializer_1793(QObject *parent) : QObject(parent)
 void Initializer_1793::initialize()
 {
     if (!check_packages())
+    {
+        initializer_status = false;
+        emit finish_initialization();
         return;
-
+    }
     if (!generate_main_view())
+    {
+        initializer_status = false;
+        emit finish_initialization();
         return;
+    }
 
+    initializer_status = true;
     emit finish_initialization();
 }
 
@@ -34,17 +42,14 @@ bool Initializer_1793::check_packages()
     } else if (!QString::compare(chpathsOutput, "nroot\n", Qt::CaseSensitive))
     {
         Logger_1793::write_log_file(LogInfoMsg, "Ошибка. Пожалуйста, запустите программу от root пользователя");
-        emit critical_error();
         return false;
     } else if (!QString::compare(chpathsOutput, "adenied\n", Qt::CaseSensitive))
     {
         Logger_1793::write_log_file(LogInfoMsg, "Ошибка. Не получены необходимые права доступа");
-        emit critical_error();
         return false;
     } else
     {
         Logger_1793::write_log_file(LogInfoMsg, "Ошибка при работе с checkpkgs.sh скриптом");
-        emit critical_error();
         return false;
     }
     return true;
@@ -259,7 +264,6 @@ bool Initializer_1793::set_modules()
     if (!main_view_file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         Logger_1793::write_log_file(LogCriticalMsg, "Cannot open main_view.qml file");
-        emit critical_error();
         return false;
     }
     QString main_view_text = main_view_file.readAll();
@@ -276,7 +280,6 @@ bool Initializer_1793::set_modules()
         if (!main_view_file.open(QIODevice::WriteOnly | QIODevice::Unbuffered))
         {
             Logger_1793::write_log_file(LogCriticalMsg, "Cannot write to main_view.qml file");
-            emit critical_error();
             return false;
         }
         QByteArray text = main_view_text.toUtf8();

@@ -12,9 +12,11 @@ WPS_AttackForm {
         id: wpsNetworksListDelegate
         Item {
             id: wrapper
-            width: 200; height: 20
-            Text { text: 'Name: ' + name }
-            Text { text: 'Mac: ' + mac }
+            width: 200; height: 35
+            Column {
+                Text { text: 'Name: ' + name }
+                Text { text: 'Mac: ' + mac }
+            }
 
             states: State {
                 name: "currentItem"
@@ -42,37 +44,77 @@ WPS_AttackForm {
     }
 
     function refresh_WPS_list() {
+        networkName = ""
+        networkMac = ""
+
         signal_Refresh_WPS_list(interfaceName)
+
+        wpsProgressBar.indeterminate = true
         wpsRefreshNetworksList.checkable = true
         wpsRefreshNetworksList.checked = true
         wpsRefreshNetworksList.enabled = false
         wpsInterfacesList.enabled = false
         wpsNetworksList.enabled = false
+        wpsRefreshInterfacesList.enabled = false
+        wpsStartAttack.enabled = false
+        wpsStopAttack.enabled = false
+
         console.log("Refreshing WPS list started")
     }
 
     function stop_refreshing_WPS_list() {
         signal_Stop_refreshing_WPS_list()
+        wpsRefreshNetworksList.checkable = false
+        wpsRefreshNetworksList.checked = false
+        wpsStopRefreshingNetworksList.checkable = true
+        wpsStopRefreshingNetworksList.checked = true
+        wpsStopRefreshingNetworksList.enabled = false
+        console.log("Refreshing WPS list stopped")
+    }
+
+    function start_WPS_attack() {
+        signal_Start_WPS_attack(interfaceName ,networkName, networkMac)
+        wpsProgressBar.indeterminate = true
+        wpsStartAttack.checkable = true
+        wpsStartAttack.checked = true
+        wpsStartAttack.enabled = false
+        wpsRefreshNetworksList.enabled = false
+        wpsInterfacesList.enabled = false
+        wpsNetworksList.enabled = false
+        wpsRefreshInterfacesList.enabled = false
+        wpsStopRefreshingNetworksList.enabled = false
+    }
+
+    function stop_WPS_attack() {
+        signal_Stop_WPS_attack()
+        wpsStartAttack.checkable = false
+        wpsStartAttack.checked = false
+        wpsStopAttack.checkable = true
+        wpsStopAttack.checked = true
+        wpsStopAttack.enabled = false
+    }
+
+    function append_stdout_text(message) {
+        wpsStdOut.append(message)
+    }
+
+    function show_all() {
+        wpsProgressBar.indeterminate = false
         wpsRefreshNetworksList.checked = false
         wpsRefreshNetworksList.checkable = false
         wpsRefreshNetworksList.enabled = true
         wpsInterfacesList.enabled = true
         wpsNetworksList.enabled = true
-        console.log("Refreshing WPS list stopped")
-    }
-
-    function start_WPS_attack() {
-        wpsStartAttack.checkable = true
-        wpsStartAttack.checked = true
-    }
-
-    function stop_WPS_attack() {
-        wpsStartAttack.checked = false
+        wpsRefreshInterfacesList.enabled = true
         wpsStartAttack.checkable = false
-    }
-
-    function append_stdout_text(message) {
-        wpsStdOut.append(message)
+        wpsStartAttack.checked = false
+        wpsStartAttack.enabled = true
+        wpsStopAttack.checkable = false
+        wpsStopAttack.checked = false
+        wpsStopAttack.enabled = true
+        wpsStopRefreshingNetworksList.checkable = false
+        wpsStopRefreshingNetworksList.checked = false
+        wpsStopRefreshingNetworksList.enabled = true
     }
 
     wpsInterfacesList.onCurrentTextChanged: {

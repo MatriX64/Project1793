@@ -17,7 +17,8 @@ public:
     DummyModule(QObject *parent = 0);
 
 public slots:
-    void startup_initialization();
+    void initialize();
+    void terminate();
 
     void qmlSignalHandler();
 };
