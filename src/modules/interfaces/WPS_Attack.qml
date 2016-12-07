@@ -58,8 +58,6 @@ WPS_AttackForm {
         wpsRefreshInterfacesList.enabled = false
         wpsStartAttack.enabled = false
         wpsStopAttack.enabled = false
-
-        console.log("Refreshing WPS list started")
     }
 
     function stop_refreshing_WPS_list() {
@@ -69,7 +67,6 @@ WPS_AttackForm {
         wpsStopRefreshingNetworksList.checkable = true
         wpsStopRefreshingNetworksList.checked = true
         wpsStopRefreshingNetworksList.enabled = false
-        console.log("Refreshing WPS list stopped")
     }
 
     function start_WPS_attack() {
@@ -127,8 +124,4 @@ WPS_AttackForm {
     wpsRefreshNetworksList.onClicked: refresh_WPS_list()
 
     anchors.fill: parent
-
-    Component.onCompleted: {
-        console.log("Moule WPS_Attack loaded")
-    }
 }

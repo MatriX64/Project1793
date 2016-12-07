@@ -47,6 +47,22 @@ bool Initializer_1793::check_packages()
     {
         Logger_1793::write_log_file(LogInfoMsg, "Ошибка. Не получены необходимые права доступа");
         return false;
+    } else if (!QString::compare(chpathsOutput, "iwerror\n", Qt::CaseSensitive))
+    {
+        Logger_1793::write_log_file(LogInfoMsg, "Ошибка. Установите программу iw");
+        return false;
+    }else if (!QString::compare(chpathsOutput, "aicngerror\n", Qt::CaseSensitive))
+    {
+        Logger_1793::write_log_file(LogInfoMsg, "Ошибка. Установите пакет aircrack-ng");
+        return false;
+    } else if (!QString::compare(chpathsOutput, "reaerror\n", Qt::CaseSensitive))
+    {
+        Logger_1793::write_log_file(LogInfoMsg, "Ошибка. Установите пакет reaver-wps");
+        return false;
+    } else if (!QString::compare(chpathsOutput, "wserror\n", Qt::CaseSensitive))
+    {
+        Logger_1793::write_log_file(LogInfoMsg, "Ошибка. Установите пакет reaver-wps");
+        return false;
     } else
     {
         Logger_1793::write_log_file(LogInfoMsg, "Ошибка при работе с checkpkgs.sh скриптом");

@@ -194,6 +194,7 @@ void WPS_Attack_module::refresh_WPS_networks_list(const QString& interface)
     if (interface.isEmpty())
     {
         append_new_message_to_std(QVariant("Please select your wireless interface"));
+        complete_routine();
         return;
     }
     emit clear_WPS_list_model();
@@ -216,14 +217,7 @@ void WPS_Attack_module::handle_switch_interface_to_monitor_data()
     data.append(switchInterfaceToMonitor->readAll());
     append_new_message_to_std(QVariant(data));
 
-    QString metaDevice;
-    QRegularExpression metaDeviceExp("(?<=on\\s\\[)(\\w+)");
-    QRegularExpressionMatch captureMetaDevice = metaDeviceExp.match(QVariant(data).toString());
-    if (captureMetaDevice.hasMatch())
-    {
-        metaDevice = captureMetaDevice.captured(0);
-    }
-    QRegularExpression monitorInterfaceName("(?<=on\\s\\["+metaDevice+"\\])(\\w+)");
+    QRegularExpression monitorInterfaceName("(\\w*[\\d]mon\\w*)|(\\w*mon[\\d]\\w*)");
 
     QRegularExpressionMatch captureIntName = monitorInterfaceName.match(QVariant(data).toString());
 
@@ -253,7 +247,6 @@ void WPS_Attack_module::handle_checking_apps_tokill_data()
     QByteArray data;
     data.append(checkAppsToKill->readAll());
     append_new_message_to_std(QVariant(data));
-    qDebug() << "checked";
 }
 
 void WPS_Attack_module::start_putting_interface_down()
@@ -309,11 +302,22 @@ void WPS_Attack_module::handle_refreshing_WPS_data()
 void WPS_Attack_module::switch_interface_to_station()
 {
     if (currentInterfaceMode == flag_interface_WPS_refreshing)
+    {
         loadWPSLits.clear();
-    else if (currentInterfaceMode == flag_interface_WPS_attack)
+    } else
+    if (currentInterfaceMode == flag_interface_WPS_attack)
+    {
         startWPSAttack.clear();
-    else
+    } else
+    {
         puttingInterfaceUp.clear();
+    }
+
+    if (monitorInterface.isEmpty())
+    {
+        qDebug() << "Cannot find monitor interface";
+        return;
+    }
 
     switchInterfaceToStation = new QProcess;
     connect(switchInterfaceToStation, SIGNAL(readyRead()), this, SLOT(handle_switch_interface_to_station_data()));
@@ -413,7 +417,12 @@ void WPS_Attack_module::complete_routine()
 
 void WPS_Attack_module::WPS_attack(const QString &interface, const QString &essid, const QString &bssid)
 {
-    //qDebug() << "Name:" << essid << "Mac:" << bssid;
+    if (bssid.isEmpty())
+    {
+        append_new_message_to_std(QVariant("Please refresh networks list and select network you want to attack"));
+        complete_routine();
+        return;
+    }
     name = essid;
     mac = bssid;
     currentInterfaceMode = flag_interface_WPS_attack;
@@ -435,10 +444,40 @@ void WPS_Attack_module::handle_WPS_attack_data()
     QByteArray data;
     data.append(startWPSAttack->readAll());
     append_new_message_to_std(QVariant(data));
-//    QRegularExpression questionExp("\\n");
-//    QRegularExpressionMatch questionCap = questionExp.match(QVariant(data).toString());
-//    if (questionCap.hasMatch())
-//        qDebug() << "Has match";
+    QString resultAttackData;
+    bool pskCheckStatus = false;
+    QRegularExpression wpspinExp("WPS\\sPIN:\\s\\S+");
+    QRegularExpressionMatch wpspinCap = wpspinExp.match(QVariant(data).toString());
+    if (wpspinCap.hasMatch())
+    {
+        pskCheckStatus = true;
+        resultAttackData.append("New cracked info:\n");
+        resultAttackData.append(wpspinCap.captured(0));
+        resultAttackData.append("\n");
+        QRegularExpression wpapskExp("WPA\\sPSK:\\s\\S+");
+        QRegularExpressionMatch wpapskCap = wpapskExp.match(QVariant(data).toString());
+        if (wpapskCap.hasMatch())
+        {
+            resultAttackData.append(wpapskCap.captured(0));
+            resultAttackData.append("\n");
+            QRegularExpression essidExp("AP\\sSSID:\\s\\S+");
+            QRegularExpressionMatch essidCap = essidExp.match(QVariant(data).toString());
+            if (essidCap.hasMatch())
+            {
+                resultAttackData.append(essidCap.captured(0));
+                resultAttackData.append("\n\n");
+            }
+        }
+    }
+    if (pskCheckStatus)
+    {
+        QFile pskResult;
+        pskResult.setFileName(QCoreApplication::applicationDirPath() + "/cracking_results");
+        pskResult.open(QIODevice::WriteOnly | QIODevice::Append);
+        QTextStream stream(&pskResult);
+        stream << resultAttackData;
+        pskResult.close();
+    }
 }
 
 void WPS_Attack_module::WPS_send_confirm()
@@ -448,6 +487,7 @@ void WPS_Attack_module::WPS_send_confirm()
 
 void WPS_Attack_module::complete_WPS_attack()
 {
+    switch_interface_to_station();
     complete_routine();
 }
 
