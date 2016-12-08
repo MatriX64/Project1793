@@ -7,6 +7,7 @@
 * build-essential 
 * aircrack-ng (version 1.2 rc4 or later) -> <https://github.com/aircrack-ng/aircrack-ng>
 * reaver-wps (version 1.5.3 or later) -> <https://github.com/t6x/reaver-wps-fork-t6x>
+    * pixiewps -> <https://github.com/wiire/pixiewps>
 *  Qt (version 5.7 or later) -> <https://www.qt.io>
 
 _This version tested on `Ubuntu` operating system ._
