@@ -26,7 +26,7 @@ WPS_Attack_module::WPS_Attack_module(QObject *parent) : QObject(parent)
     connect(Module_1793::qmlRootObjectHandler, SIGNAL(signal_Refresh_interfaces_list()), this, SLOT(refresh_interfaces_list()));
     connect(Module_1793::qmlRootObjectHandler, SIGNAL(signal_Stop_refreshing_WPS_list()), this, SLOT(stop_refreshing_WPS_list()));
 
-    connect(Module_1793::qmlRootObjectHandler, SIGNAL(signal_Start_WPS_attack(QString, QString, QString)), this, SLOT(WPS_attack(QString, QString, QString)));
+    connect(Module_1793::qmlRootObjectHandler, SIGNAL(signal_Start_WPS_attack(QString, QString, QString, int)), this, SLOT(WPS_attack(QString, QString, QString, int)));
     connect(Module_1793::qmlRootObjectHandler, SIGNAL(signal_Stop_WPS_attack()), this, SLOT(stop_WPS_attack()));
 
     connect(this, SIGNAL(add_new_WPS_network(Network)), Model_1793::model, SLOT(add_new_network(Network)));
@@ -356,7 +356,7 @@ void WPS_Attack_module::stop_switching_interface_to_station()
     switchInterfaceToStation.clear();
     currentInterfaceMode = flag_interface_not_handling;
     monitorInterface = "";
-    qDebug() << "switching to station stopped";
+    //qDebug() << "switching to station stopped";
     complete_routine();
 }
 
@@ -434,7 +434,7 @@ void WPS_Attack_module::complete_routine()
     moduleObject.clear();
 }
 
-void WPS_Attack_module::WPS_attack(const QString &interface, const QString &essid, const QString &bssid)
+void WPS_Attack_module::WPS_attack(const QString &interface, const QString &essid, const QString &bssid, const int pixie)
 {
     if (bssid.isEmpty())
     {
@@ -444,6 +444,7 @@ void WPS_Attack_module::WPS_attack(const QString &interface, const QString &essi
     }
     name = essid;
     mac = bssid;
+    pixieState = pixie;
     currentInterfaceMode = flag_interface_WPS_attack;
     start_working_with_interface(interface);
 }
@@ -455,7 +456,10 @@ void WPS_Attack_module::start_WPS_attack()
     connect(startWPSAttack, SIGNAL(readyRead()), this, SLOT(handle_WPS_attack_data()));
     connect(startWPSAttack, SIGNAL(started()), this, SLOT(WPS_send_confirm()));
     connect(startWPSAttack, SIGNAL(finished(int)), this, SLOT(complete_WPS_attack()));
-    startWPSAttack->start("reaver -i " + monitorInterface + " -b " + mac + " -vv", QProcess::ReadWrite);
+    if (pixieState == 0)
+        startWPSAttack->start("reaver -i " + monitorInterface + " -b " + mac + " -vv", QProcess::ReadWrite);
+    else if (pixieState == 1)
+        startWPSAttack->start("reaver -i " + monitorInterface + " -b " + mac + " -K 1 -vv", QProcess::ReadWrite);
 }
 
 void WPS_Attack_module::handle_WPS_attack_data()

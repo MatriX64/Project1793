@@ -24,6 +24,7 @@ Item {
     id: item1
     width: 400
     height: 400
+    property alias wpsPixieBox: wpsPixieBox
     property alias wpsProgressBar: wpsProgressBar
     property alias wpsStdOut: wpsStdOut
     property alias wpsRefreshInterfacesList: wpsRefreshInterfacesList
@@ -71,7 +72,7 @@ Item {
         anchors.left: parent.left
         font.pointSize: 15
         anchors.topMargin: 53
-        anchors.rightMargin: 8
+        anchors.rightMargin: 185
         anchors.bottomMargin: 8
         anchors.leftMargin: 248
         textColor: "#891212"
@@ -180,12 +181,12 @@ Item {
         color: "#d60404"
         text: qsTr(networkName)
         anchors.right: parent.right
-        anchors.rightMargin: -50
+        anchors.rightMargin: 8
         anchors.left: parent.left
         anchors.leftMargin: 373
         horizontalAlignment: Text.AlignLeft
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 353
+        anchors.bottomMargin: 653
         anchors.top: parent.top
         anchors.topMargin: 33
         font.pixelSize: 12
@@ -197,6 +198,36 @@ Item {
         y: 33
         color: "#1506a7"
         text: qsTr("Wireless interfaces" + "\u2193")
+        font.pixelSize: 12
+    }
+
+    ComboBox {
+        id: wpsPixieBox
+        height: 26
+        anchors.right: wpsPixieTitle.left
+        anchors.rightMargin: 6
+        anchors.left: wpsStdOut.right
+        anchors.leftMargin: 6
+        anchors.top: parent.top
+        anchors.topMargin: 53
+        model: ListModel {
+            ListElement { text: "disabled" }
+            ListElement { text: "enabled" }
+        }
+    }
+
+    Text {
+        id: wpsPixieTitle
+        x: 826
+        y: 53
+        width: 66
+        height: 26
+        color: "#1506a7"
+        text: qsTr("Pixie dust")
+        anchors.right: parent.right
+        anchors.rightMargin: 8
+        horizontalAlignment: Text.AlignLeft
+        verticalAlignment: Text.AlignVCenter
         font.pixelSize: 12
     }
 }

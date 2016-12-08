@@ -31,8 +31,8 @@ Window {
     id: root
     width: 900
     height: 700
-    minimumWidth: 500
-    minimumHeight: 500
+    minimumWidth: 800
+    minimumHeight: 600
     title: qsTr("Project1793. Main Window")
 
     //global signals:
@@ -40,7 +40,8 @@ Window {
     signal signal_Refresh_interfaces_list()
     signal signal_Refresh_WPS_list(string msg)
     signal signal_Stop_refreshing_WPS_list()
-    signal signal_Start_WPS_attack(string interf, string essid, string bssid)
+    signal signal_Start_WPS_attack(string interf, string essid, string bssid,
+                                   int pixieState)
     signal signal_Stop_WPS_attack()
     signal signalDummy()
 

@@ -41,12 +41,11 @@ public:
     explicit WPS_Attack_module(QObject* parent = 0);
     ~WPS_Attack_module();
 
-    int number = 1;
-
 private:
     QString monitorInterface = "";
     QString name = "";
     QString mac = "";
+    int pixieState = 0;
 
     int currentInterfaceMode = flag_interface_not_handling;
 
@@ -91,7 +90,8 @@ public slots:
     void stop_refreshing_WPS_list();
 
     //WPS_attack
-    void WPS_attack(const QString& interface, const QString& essid, const QString& bssid);
+    void WPS_attack(const QString& interface, const QString& essid, const QString& bssid,
+                    const int pixie);
     void start_WPS_attack();
     void handle_WPS_attack_data();
     void stop_WPS_attack();

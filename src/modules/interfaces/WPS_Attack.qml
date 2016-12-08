@@ -89,7 +89,7 @@ WPS_AttackForm {
     }
 
     function start_WPS_attack() {
-        signal_Start_WPS_attack(interfaceName ,networkName, networkMac)
+        signal_Start_WPS_attack(interfaceName ,networkName, networkMac, wpsPixieBox.currentIndex)
         wpsProgressBar.indeterminate = true
         wpsStartAttack.checkable = true
         wpsStartAttack.checked = true
