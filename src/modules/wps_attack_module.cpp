@@ -57,7 +57,7 @@ void WPS_Attack_module::terminate()
             switchInterfaceToMonitor->terminate();
             switchInterfaceToMonitor->waitForFinished();
         }
-        switchInterfaceToMonitor.clear();
+        delete (switchInterfaceToMonitor);
     }
 
     if (!switchInterfaceToStation.isNull())
@@ -69,7 +69,7 @@ void WPS_Attack_module::terminate()
             switchInterfaceToStation->terminate();
             switchInterfaceToStation->waitForFinished();
         }
-        switchInterfaceToStation.clear();
+        delete (switchInterfaceToStation);
     }
 
     if (!checkAppsToKill.isNull())
@@ -81,7 +81,7 @@ void WPS_Attack_module::terminate()
             checkAppsToKill->terminate();
             checkAppsToKill->waitForFinished();
         }
-        checkAppsToKill.clear();
+        delete (checkAppsToKill);
     }
 
     if (!puttingInterfaceDown.isNull())
@@ -92,7 +92,7 @@ void WPS_Attack_module::terminate()
             puttingInterfaceDown->terminate();
             puttingInterfaceDown->waitForFinished();
         }
-        puttingInterfaceDown.clear();
+        delete (puttingInterfaceDown);
     }
 
     if (!puttingInterfaceUp.isNull())
@@ -108,7 +108,7 @@ void WPS_Attack_module::terminate()
             puttingInterfaceUp->terminate();
             puttingInterfaceUp->waitForFinished();
         }
-        puttingInterfaceUp.clear();
+        delete (puttingInterfaceUp);
     }
 
     if (!startWPSAttack.isNull())
@@ -121,7 +121,7 @@ void WPS_Attack_module::terminate()
             disconnect(startWPSAttack, SIGNAL(finished(int)), this, SLOT(complete_WPS_attack()));
             startWPSAttack->terminate();
             startWPSAttack->waitForFinished();
-            startWPSAttack.clear();
+            delete (startWPSAttack);
         }
     }
 
@@ -133,7 +133,7 @@ void WPS_Attack_module::terminate()
             disconnect(loadWPSLits, SIGNAL(readyRead()), this, SLOT(handle_refreshing_WPS_data()));
             loadWPSLits->terminate();
             loadWPSLits->waitForFinished();
-            loadWPSLits.clear();
+            delete (loadWPSLits);
         }
     }
 
@@ -157,11 +157,12 @@ void WPS_Attack_module::terminate()
                 switchInterfaceToStation = new QProcess;
                 switchInterfaceToStation->start("airmon-ng stop " + captureInterfaceName.captured(0));
                 switchInterfaceToStation->waitForFinished();
-                switchInterfaceToStation.clear();
+                delete (switchInterfaceToStation);
             }
         }
     }
-    loadInterfacesList.clear();
+    loadInterfacesList->waitForFinished();
+    delete (loadInterfacesList);
 
 //    qDebug() << "startWPSAttack" << startWPSAttack.data();
 //    qDebug() << "loadWPSLits" << loadWPSLits.data();
@@ -205,7 +206,7 @@ void WPS_Attack_module::handle_interfaces_info()
 
 void WPS_Attack_module::stop_refreshing_interfaces_list()
 {
-    loadInterfacesList.clear();
+    loadInterfacesList->deleteLater();
 }
 
 void WPS_Attack_module::refresh_WPS_networks_list(const QString& interface)
@@ -248,13 +249,13 @@ void WPS_Attack_module::handle_switch_interface_to_monitor_data()
 
 void WPS_Attack_module::stop_switching_interface_to_monitor()
 {
-    switchInterfaceToMonitor.clear();
+    switchInterfaceToMonitor->deleteLater();
     switch_interface_to_station();
 }
 
 void WPS_Attack_module::start_checking_apps_tokill()
 {
-    switchInterfaceToMonitor.clear();
+    switchInterfaceToMonitor->deleteLater();
     checkAppsToKill = new QProcess;
     connect(checkAppsToKill, SIGNAL(readyRead()), this, SLOT(handle_checking_apps_tokill_data()));
     connect(checkAppsToKill, SIGNAL(finished(int)), this, SLOT(start_putting_interface_down()));
@@ -270,7 +271,7 @@ void WPS_Attack_module::handle_checking_apps_tokill_data()
 
 void WPS_Attack_module::start_putting_interface_down()
 {
-    checkAppsToKill.clear();
+    checkAppsToKill->deleteLater();
     puttingInterfaceDown = new QProcess;
     connect(puttingInterfaceDown, SIGNAL(finished(int)), this, SLOT(start_putting_interface_up()));
     puttingInterfaceDown->start("ifconfig " + monitorInterface + " down");
@@ -278,7 +279,7 @@ void WPS_Attack_module::start_putting_interface_down()
 
 void WPS_Attack_module::start_putting_interface_up()
 {
-    puttingInterfaceDown.clear();
+    puttingInterfaceDown->deleteLater();
     puttingInterfaceUp = new QProcess;
     if (currentInterfaceMode == flag_interface_WPS_refreshing)
         connect(puttingInterfaceUp, SIGNAL(finished(int)), this, SLOT(start_refreshing_WPS_list()));
@@ -291,7 +292,7 @@ void WPS_Attack_module::start_putting_interface_up()
 
 void WPS_Attack_module::start_refreshing_WPS_list()
 {
-    puttingInterfaceUp.clear();
+    puttingInterfaceUp->deleteLater();
     loadWPSLits = new QProcess(this);
     connect(loadWPSLits, SIGNAL(readyRead()), this, SLOT(handle_refreshing_WPS_data()));
     loadWPSLits->start("wash -i " + monitorInterface);
@@ -320,18 +321,6 @@ void WPS_Attack_module::handle_refreshing_WPS_data()
 
 void WPS_Attack_module::switch_interface_to_station()
 {
-    if (currentInterfaceMode == flag_interface_WPS_refreshing)
-    {
-        loadWPSLits.clear();
-    } else
-    if (currentInterfaceMode == flag_interface_WPS_attack)
-    {
-        startWPSAttack.clear();
-    } else
-    {
-        puttingInterfaceUp.clear();
-    }
-
     if (monitorInterface.isEmpty())
     {
         qDebug() << "Cannot find monitor interface";
@@ -353,10 +342,9 @@ void WPS_Attack_module::handle_switch_interface_to_station_data()
 
 void WPS_Attack_module::stop_switching_interface_to_station()
 {
-    switchInterfaceToStation.clear();
+    switchInterfaceToStation->deleteLater();
     currentInterfaceMode = flag_interface_not_handling;
     monitorInterface = "";
-    //qDebug() << "switching to station stopped";
     complete_routine();
 }
 
@@ -378,9 +366,10 @@ void WPS_Attack_module::stop_refreshing_WPS_list()
             disconnect(checkAppsToKill, SIGNAL(readyRead()), this, SLOT(handle_checking_apps_tokill_data()));
             disconnect(checkAppsToKill, SIGNAL(finished(int)), this, SLOT(start_putting_interface_down()));
             checkAppsToKill->terminate();
-            switch_interface_to_station();
+            checkAppsToKill->waitForFinished();
         }
-        checkAppsToKill.clear();
+        checkAppsToKill->deleteLater();
+        switch_interface_to_station();
     } else
 
     if (!puttingInterfaceDown.isNull())
@@ -389,9 +378,10 @@ void WPS_Attack_module::stop_refreshing_WPS_list()
         {
             disconnect(puttingInterfaceDown, SIGNAL(finished(int)), this, SLOT(start_putting_interface_up()));
             puttingInterfaceDown->terminate();
-            switch_interface_to_station();
+            puttingInterfaceDown->waitForFinished();
         }
-        puttingInterfaceDown.clear();
+        puttingInterfaceDown->deleteLater();
+        switch_interface_to_station();
     } else
 
     if (!puttingInterfaceUp.isNull())
@@ -405,9 +395,10 @@ void WPS_Attack_module::stop_refreshing_WPS_list()
             else
                 disconnect(puttingInterfaceUp, SIGNAL(finished(int)), this, SLOT(switch_interface_to_station()));
             puttingInterfaceUp->terminate();
-            switch_interface_to_station();
+            puttingInterfaceUp->waitForFinished();
         }
-        puttingInterfaceUp.clear();
+        puttingInterfaceUp->deleteLater();
+        switch_interface_to_station();
     } else
 
     if (!loadWPSLits.isNull())
@@ -417,7 +408,8 @@ void WPS_Attack_module::stop_refreshing_WPS_list()
             append_new_message_to_std(QVariant("WPS list updated"));
             disconnect(loadWPSLits, SIGNAL(readyRead()), this, SLOT(handle_refreshing_WPS_data()));
             loadWPSLits->terminate();
-            loadWPSLits.clear();
+            loadWPSLits->waitForFinished();
+            loadWPSLits->deleteLater();
             switch_interface_to_station();
         }
     } else
@@ -429,9 +421,8 @@ void WPS_Attack_module::stop_refreshing_WPS_list()
 
 void WPS_Attack_module::complete_routine()
 {
-    QPointer<QObject> moduleObject = Module_1793::qmlRootObjectHandler->findChild<QObject*>("wpsAttackModule");
+    QObject* moduleObject = Module_1793::qmlRootObjectHandler->findChild<QObject*>("wpsAttackModule");
     QMetaObject::invokeMethod(moduleObject, "show_all");
-    moduleObject.clear();
 }
 
 void WPS_Attack_module::WPS_attack(const QString &interface, const QString &essid, const QString &bssid, const int pixie)
@@ -451,7 +442,7 @@ void WPS_Attack_module::WPS_attack(const QString &interface, const QString &essi
 
 void WPS_Attack_module::start_WPS_attack()
 {
-    puttingInterfaceUp.clear();
+    puttingInterfaceUp->deleteLater();
     startWPSAttack = new QProcess(this);
     connect(startWPSAttack, SIGNAL(readyRead()), this, SLOT(handle_WPS_attack_data()));
     connect(startWPSAttack, SIGNAL(started()), this, SLOT(WPS_send_confirm()));
@@ -532,9 +523,10 @@ void WPS_Attack_module::stop_WPS_attack()
             disconnect(checkAppsToKill, SIGNAL(readyRead()), this, SLOT(handle_checking_apps_tokill_data()));
             disconnect(checkAppsToKill, SIGNAL(finished(int)), this, SLOT(start_putting_interface_down()));
             checkAppsToKill->terminate();
+            checkAppsToKill->waitForFinished();
             switch_interface_to_station();
         }
-        checkAppsToKill.clear();
+        checkAppsToKill->deleteLater();
     } else
 
     if (!puttingInterfaceDown.isNull())
@@ -543,9 +535,10 @@ void WPS_Attack_module::stop_WPS_attack()
         {
             disconnect(puttingInterfaceDown, SIGNAL(finished(int)), this, SLOT(start_putting_interface_up()));
             puttingInterfaceDown->terminate();
+            puttingInterfaceDown->waitForFinished();
             switch_interface_to_station();
         }
-        puttingInterfaceDown.clear();
+        puttingInterfaceDown->deleteLater();
     } else
 
     if (!puttingInterfaceUp.isNull())
@@ -559,9 +552,10 @@ void WPS_Attack_module::stop_WPS_attack()
             else
                 disconnect(puttingInterfaceUp, SIGNAL(finished(int)), this, SLOT(switch_interface_to_station()));
             puttingInterfaceUp->terminate();
+            puttingInterfaceUp->waitForFinished();
             switch_interface_to_station();
         }
-        puttingInterfaceUp.clear();
+        puttingInterfaceUp->deleteLater();
     } else
 
     if (!startWPSAttack.isNull())
@@ -573,7 +567,8 @@ void WPS_Attack_module::stop_WPS_attack()
             disconnect(startWPSAttack, SIGNAL(started()), this, SLOT(WPS_send_confirm()));
             disconnect(startWPSAttack, SIGNAL(finished(int)), this, SLOT(complete_WPS_attack()));
             startWPSAttack->terminate();
-            startWPSAttack.clear();
+            startWPSAttack->waitForFinished();
+            startWPSAttack->deleteLater();
             switch_interface_to_station();
         }
     } else
@@ -585,8 +580,7 @@ void WPS_Attack_module::stop_WPS_attack()
 
 void WPS_Attack_module::append_new_message_to_std(const QVariant& data)
 {
-    QPointer<QObject> moduleObject = Module_1793::qmlRootObjectHandler->findChild<QObject*>("wpsAttackModule");
+    QObject* moduleObject = Module_1793::qmlRootObjectHandler->findChild<QObject*>("wpsAttackModule");
     QMetaObject::invokeMethod(moduleObject, "append_stdout_text",
                               Q_ARG(QVariant, data));
-    moduleObject.clear();
 }

@@ -1,8 +1,9 @@
 <RCC>
     <qresource prefix="/">
-        <file>src/core/interfaces/fatal_message.qml</file>
         <file>src/core/interfaces/LauncherView.qml</file>
         <file>src/core/interfaces/LauncherViewForm.ui.qml</file>
         <file>images/waves.gif</file>
+        <file>src/core/interfaces/FatalMessage.qml</file>
+        <file>src/core/interfaces/FatalMessageForm.ui.qml</file>
     </qresource>
 </RCC>

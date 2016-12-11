@@ -84,7 +84,7 @@ public slots:
     void complete_routine();
 
     //refreshing networks with WPS list
-    void refresh_WPS_networks_list(const QString& interface);    
+    void refresh_WPS_networks_list(const QString& interface);
     void start_refreshing_WPS_list();
     void handle_refreshing_WPS_data();
     void stop_refreshing_WPS_list();

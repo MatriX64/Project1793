@@ -34,7 +34,7 @@ class Module_1793 : public QObject
 {
     Q_OBJECT
 public:
-    explicit Module_1793(QQmlApplicationEngine *engine, QObject *parent = 0);
+    explicit Module_1793(QObject *parent = 0);
     ~Module_1793();
 
 public:

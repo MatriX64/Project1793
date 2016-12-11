@@ -58,6 +58,7 @@ public slots: //modules data slots
     void clear_interfaces_list();
 
 public: //sysyem data
+    static QQmlApplicationEngine *engineHandler;
     static QMap<QString,QString> qmlTabView;
     static QList<QString> modulesList;
 };

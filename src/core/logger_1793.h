@@ -41,8 +41,6 @@ public:
     ~Logger_1793();
 
 public:
-    static QFile mLogFile;
-
     static void write_log_file(int type, const QString& msg);
     void initialize();
 };

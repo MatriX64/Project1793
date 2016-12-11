@@ -19,8 +19,6 @@
 
 #include "logger_1793.h"
 
-QFile Logger_1793::mLogFile;
-
 Logger_1793::Logger_1793(QObject *parent) : QObject(parent)
 {
 
@@ -28,12 +26,15 @@ Logger_1793::Logger_1793(QObject *parent) : QObject(parent)
 
 Logger_1793::~Logger_1793()
 {
-    write_log_file(LogInfoMsg, "(Logger)Logger closed");
-    mLogFile.close();
+
 }
 
 void Logger_1793::write_log_file(int type, const QString &msg)
 {
+    QFile mLogFile;
+    mLogFile.setFileName(QCoreApplication::applicationDirPath() + "/log");
+    mLogFile.open(QIODevice::WriteOnly | QIODevice::Append);
+
     QTextStream out(&mLogFile);
     out << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz ");
     switch (type)
@@ -45,13 +46,6 @@ void Logger_1793::write_log_file(int type, const QString &msg)
         case LogFatalMsg:    out << "FTL "; break;
     }
     out << ": " << msg << endl;
-    out.flush();
-}
 
-void Logger_1793::initialize()
-{
-    mLogFile.setFileName(QCoreApplication::applicationDirPath() + "/log");
-    mLogFile.open(QIODevice::WriteOnly);
-    //qDebug() << QCoreApplication::applicationDirPath() + "/log";
-    write_log_file(LogInfoMsg, "(Logger)Logger initialized");
+    mLogFile.close();
 }

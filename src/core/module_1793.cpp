@@ -21,9 +21,9 @@
 
 QObject*               Module_1793::qmlRootObjectHandler;
 
-Module_1793::Module_1793(QQmlApplicationEngine *engine, QObject *parent) : QObject(parent)
+Module_1793::Module_1793(QObject *parent) : QObject(parent)
 {
-    qmlRootObjectHandler = engine->rootObjects().first();
+    qmlRootObjectHandler = Model_1793::engineHandler->rootObjects().first();
 }
 
 Module_1793::~Module_1793()

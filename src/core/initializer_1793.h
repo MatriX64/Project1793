@@ -36,6 +36,7 @@ class Initializer_1793 : public QObject
     Q_OBJECT
 public:
     explicit Initializer_1793(QObject *parent = 0);
+    ~Initializer_1793();
 
     bool initializer_status;
 

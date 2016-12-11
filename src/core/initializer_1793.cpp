@@ -24,6 +24,11 @@ Initializer_1793::Initializer_1793(QObject *parent) : QObject(parent)
 
 }
 
+Initializer_1793::~Initializer_1793()
+{
+
+}
+
 void Initializer_1793::initialize()
 {
     if (!check_packages())
@@ -56,35 +61,35 @@ bool Initializer_1793::check_packages()
     chpaths.waitForFinished();
     if (!QString::compare(chpathsOutput, "complete\n", Qt::CaseSensitive))
     {
-        Logger_1793::write_log_file(LogCriticalMsg, "Проверка наличия необходимых для запуска данных прошла успешно");
+        Logger_1793::write_log_file(LogInfoMsg, "Data checking completed successfully");
         return true;
     } else if (!QString::compare(chpathsOutput, "nroot\n", Qt::CaseSensitive))
     {
-        Logger_1793::write_log_file(LogInfoMsg, "Ошибка. Пожалуйста, запустите программу от root пользователя");
+        Logger_1793::write_log_file(LogInfoMsg, "Error. Please, run this program as \"root\"");
         return false;
     } else if (!QString::compare(chpathsOutput, "adenied\n", Qt::CaseSensitive))
     {
-        Logger_1793::write_log_file(LogInfoMsg, "Ошибка. Не получены необходимые права доступа");
+        Logger_1793::write_log_file(LogInfoMsg, "Error. Access denied ( don't know why =( ))");
         return false;
     } else if (!QString::compare(chpathsOutput, "iwerror\n", Qt::CaseSensitive))
     {
-        Logger_1793::write_log_file(LogInfoMsg, "Ошибка. Установите программу iw");
+        Logger_1793::write_log_file(LogInfoMsg, "Error. Please install \"iw\" on your system");
         return false;
     }else if (!QString::compare(chpathsOutput, "aicngerror\n", Qt::CaseSensitive))
     {
-        Logger_1793::write_log_file(LogInfoMsg, "Ошибка. Установите пакет aircrack-ng");
+        Logger_1793::write_log_file(LogInfoMsg, "Error. Please, install \"aircrack-ng\" package on your system");
         return false;
     } else if (!QString::compare(chpathsOutput, "reaerror\n", Qt::CaseSensitive))
     {
-        Logger_1793::write_log_file(LogInfoMsg, "Ошибка. Установите пакет reaver-wps");
+        Logger_1793::write_log_file(LogInfoMsg, "Error. Please, install \"reaver-wps\" package on your system");
         return false;
     } else if (!QString::compare(chpathsOutput, "wserror\n", Qt::CaseSensitive))
     {
-        Logger_1793::write_log_file(LogInfoMsg, "Ошибка. Установите пакет reaver-wps");
+        Logger_1793::write_log_file(LogInfoMsg, "Error. Please, install \"reaver-wps\" package on your system");
         return false;
     } else
     {
-        Logger_1793::write_log_file(LogInfoMsg, "Ошибка при работе с checkpkgs.sh скриптом");
+        Logger_1793::write_log_file(LogInfoMsg, "Error while running \"checkpkgs.sh\" script");
         return false;
     }
     return true;
@@ -320,7 +325,7 @@ bool Initializer_1793::set_modules()
         QByteArray text = main_view_text.toUtf8();
         main_view_file.write(text);
         main_view_file.close();
-        qDebug() << "main_view.qml was rewrited";
+        Logger_1793::write_log_file(LogWarningMsg,"main_view.qml was rewrited");
     }
     //qDebug() << "TabView created successfully";
 

@@ -39,7 +39,7 @@ class ModuleManager_1793 : public QObject
 {
     Q_OBJECT
 public:
-    ModuleManager_1793(QQmlApplicationEngine *engine, QObject *parent);
+    ModuleManager_1793(QObject *parent = 0);
     ~ModuleManager_1793();
 public:
     Module_1793 moduleController;

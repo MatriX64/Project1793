@@ -21,27 +21,28 @@
 
 Model_1793* Model_1793::model;
 
-QMap<QString,QString> Model_1793::qmlTabView;
+QQmlApplicationEngine* Model_1793::engineHandler;
+QMap<QString,QString>  Model_1793::qmlTabView;
 QList<QString>         Model_1793::modulesList;
 
 Model_1793::Model_1793(QQmlApplicationEngine *engine, QObject *parent) : QObject(parent)
 {
     qRegisterMetaType<Network>();
-
     model = this;
 
-    engine->rootContext()->setContextProperty("wpsListModel", QVariant::fromValue(&networksList));
-    engine->rootContext()->setContextProperty("interfacesListModel", QVariant::fromValue(&interfacesList));
+    Model_1793::engineHandler = engine;
+    engineHandler->rootContext()->setContextProperty("wpsListModel", QVariant::fromValue(&networksList));
+    engineHandler->rootContext()->setContextProperty("interfacesListModel", QVariant::fromValue(&interfacesList));
 }
 
 Model_1793::~Model_1793()
 {
-    Logger_1793::write_log_file(LogInfoMsg, "Модель уничтожена");
+    Logger_1793::write_log_file(LogInfoMsg, "Model destroyed");
 }
 
 void Model_1793::start()
 {
-    Logger_1793::write_log_file(LogInfoMsg, "Модель запущена");
+    Logger_1793::write_log_file(LogInfoMsg, "Model started");
 }
 
 void Model_1793::add_new_network(const Network &network)
