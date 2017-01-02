@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, MatriXSan <matrix3sai@gmail.com>
+ * Copyright (c) 2016,2017 sanmira32 <matrix3sai@gmail.com>
  *
  *  This file is part of Project1793.
  *
