@@ -17,159 +17,83 @@
  *  along with Project1793.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "initializer_1793.h"
+#include "modulesmanager_1793.h"
 
-Initializer_1793::Initializer_1793(QObject *parent) : QObject(parent)
+ModulesManager_1793::ModulesManager_1793(QObject *parent) :  QObject(parent)
 {
 
 }
 
-Initializer_1793::~Initializer_1793()
+ModulesManager_1793::~ModulesManager_1793()
 {
-
-}
-
-void Initializer_1793::initialize()
-{
-    if (!check_packages())
+    for (int i = 0; i < modulesList.count(); i++)
     {
-        initializer_status = false;
-        emit finish_initialization();
-        return;
+        modulesList.at(i)->terminate_module();
+        delete (modulesList.at(i));
     }
-    if (!generate_main_view())
-    {
-        initializer_status = false;
-        emit finish_initialization();
-        return;
-    }
-
-    initializer_status = true;
-    emit finish_initialization();
 }
 
-bool Initializer_1793::check_packages()
+void ModulesManager_1793::add_new_module(Module_1793* module, const QString &moduleName, const QString &modulePath)
 {
-    QProcess chpaths(this);
-    chpaths.start("chmod +x " + QCoreApplication::applicationDirPath() + "/scripts/checkpkgs.sh");
-    chpaths.waitForFinished();
 
-    chpaths.start("/bin/bash " + QCoreApplication::applicationDirPath() +  "/scripts/checkpkgs.sh");
-    chpaths.waitForReadyRead();
-    QString chpathsOutput = QTextCodec::codecForMib(106)->toUnicode(chpaths.readAll());
-
-    chpaths.waitForFinished();
-    if (!QString::compare(chpathsOutput, "complete\n", Qt::CaseSensitive))
-    {
-        Logger_1793::write_log_file(LogInfoMsg, "Data checking completed successfully");
-        return true;
-    } else if (!QString::compare(chpathsOutput, "nroot\n", Qt::CaseSensitive))
-    {
-        Logger_1793::write_log_file(LogInfoMsg, "Error. Please, run this program as \"root\"");
-        return false;
-    } else if (!QString::compare(chpathsOutput, "adenied\n", Qt::CaseSensitive))
-    {
-        Logger_1793::write_log_file(LogInfoMsg, "Error. Access denied ( don't know why =( ))");
-        return false;
-    } else if (!QString::compare(chpathsOutput, "iwerror\n", Qt::CaseSensitive))
-    {
-        Logger_1793::write_log_file(LogInfoMsg, "Error. Please install \"iw\" on your system");
-        return false;
-    }else if (!QString::compare(chpathsOutput, "aicngerror\n", Qt::CaseSensitive))
-    {
-        Logger_1793::write_log_file(LogInfoMsg, "Error. Please, install \"aircrack-ng\" package on your system");
-        return false;
-    } else if (!QString::compare(chpathsOutput, "reaerror\n", Qt::CaseSensitive))
-    {
-        Logger_1793::write_log_file(LogInfoMsg, "Error. Please, install \"reaver-wps\" package on your system");
-        return false;
-    } else if (!QString::compare(chpathsOutput, "wserror\n", Qt::CaseSensitive))
-    {
-        Logger_1793::write_log_file(LogInfoMsg, "Error. Please, install \"reaver-wps\" package on your system");
-        return false;
-    } else
-    {
-        Logger_1793::write_log_file(LogInfoMsg, "Error while running \"checkpkgs.sh\" script");
-        return false;
-    }
-    return true;
-}
-
-bool Initializer_1793::generate_main_view()
-{
-    add_module_layouts();
-    if (!set_modules())
-        return false;
-    else
-        return true;
-}
-
-//custom TabView path
-void Initializer_1793::add_module_layouts()
-{
-    Initializer_1793::new_module_layout("password_attacks|wep/wpa/wpa2_attacks|wps_attack", "WPS_Attack");
-    Initializer_1793::new_module_layout("password_attacks|test_module", "DummyQML");
-}
-
-void Initializer_1793::new_module_layout(const QString &moduleName, const QString &fileName)
-{
-    if (fileName.contains(" ") || fileName.contains("\\") || fileName.contains(QRegularExpression("\\d")))
+    if (moduleName.contains(" ") || moduleName.contains("\\") || moduleName.contains(QRegularExpression("\\d")))
     {
         qDebug() << "Error in file name";
         return;
-    } else if (Model_1793::modulesList.contains(fileName))
+    } /*else if (modulesNamesList.contains(moduleName))
     {
-        qDebug() << "MainView already contains module " + fileName;
+        qDebug() << "MainView already contains module " + moduleName;
         return;
-    }
+    }*/
 
-    Model_1793::modulesList.append(fileName);
+    modulesNamesList.append(moduleName);
+    modulesList.append(module);
 
-    QStringList modulePath;
-    modulePath = moduleName.split("|");
+    QStringList modulePathsList;
+    modulePathsList = modulePath.split("|");
 
-    for (int i = 0; i < modulePath.count(); i++) //switch modules paths
+    for (int i = 0; i < modulePathsList.count(); i++) //switch modules paths
     {
-        if (i == modulePath.count() - 1) //if it's last path
+        if (i == modulePathsList.count() - 1) //if it's last path
         {
             QString pathTale;
 
             for (int j = 0; j <= i; j++) //make value
             {
-                pathTale.append(modulePath.at(j));
+                pathTale.append(modulePathsList.at(j));
                 pathTale.append("|");
             }
             pathTale.chop(1);
 
-            if (!(Model_1793::qmlTabView.key(pathTale).contains(QRegularExpression(QString::number(i) + "\\s\\w")) && (!Model_1793::qmlTabView.value(Model_1793::qmlTabView.key(pathTale)).compare(pathTale))) && (!(Model_1793::qmlTabView.contains(QString::number(i)) && (!Model_1793::qmlTabView.value(QString::number(i)).compare(pathTale)))))
+            if (!(qmlTabView.key(pathTale).contains(QRegularExpression(QString::number(i) + "\\s\\w")) && (!qmlTabView.value(qmlTabView.key(pathTale)).compare(pathTale))) && (!(qmlTabView.contains(QString::number(i)) && (!qmlTabView.value(QString::number(i)).compare(pathTale)))))
             { //if there isn't key: number, value: keyValue or there isn't key: number+string, value: keyValue then insert key: number+string, value: keyValue
-                Model_1793::qmlTabView.insertMulti(QString::number(i) + " " + fileName, pathTale);
+                qmlTabView.insertMulti(QString::number(i) + " " + moduleName, pathTale);
             }
         } else //if it isn't last path
         {
             QString pathTale;
             for (int j = 0; j <= i; j++) //make value
             {
-                pathTale.append(modulePath.at(j));
+                pathTale.append(modulePathsList.at(j));
                 pathTale.append("|");
             }
             pathTale.chop(1);
 
-            if (Model_1793::qmlTabView.key(pathTale).contains(QRegularExpression(QString::number(i) + "\\s\\w")))
+            if (qmlTabView.key(pathTale).contains(QRegularExpression(QString::number(i) + "\\s\\w")))
             { //if there is key: number+string then replace it with key: number, value: keyValue
-                Model_1793::qmlTabView.remove(Model_1793::qmlTabView.key(pathTale));
-                Model_1793::qmlTabView.insert(QString::number(i), pathTale);
-            } else if (!(Model_1793::qmlTabView.contains(QString::number(i)) && (!Model_1793::qmlTabView.value(QString::number(i)).compare(pathTale))))
+                qmlTabView.remove(qmlTabView.key(pathTale));
+                qmlTabView.insert(QString::number(i), pathTale);
+            } else if (!(qmlTabView.contains(QString::number(i)) && (!qmlTabView.value(QString::number(i)).compare(pathTale))))
             { //else if there isn't key: number, value: keyValue
-                Model_1793::qmlTabView.insertMulti(QString::number(i), pathTale);
+                qmlTabView.insertMulti(QString::number(i), pathTale);
             }
         }
     }
 }
 
-bool Initializer_1793::set_modules()
+QByteArray ModulesManager_1793::set_modules()
 {
-    QMap<QString,QString> view = Model_1793::qmlTabView;
+    QMap<QString,QString> view = qmlTabView;
     QRegularExpression captureKeyD("\\d+");
     QRegularExpression captureKeyW("(\\S+)(\\w+)");
 
@@ -227,11 +151,12 @@ bool Initializer_1793::set_modules()
 
             if (keysWithStrings.contains(tabName.at(j)))
             {
-                QJsonObject moduleAnchor;
-                moduleAnchor.insert("0anchors.fill", "parent");
+                QJsonObject moduleParameters;
+                moduleParameters.insert("0anchors.fill", "parent");
                 QJsonObject moduleClass;
-                moduleClass.insert(keysWithStrings.value(tabName.at(j)), moduleAnchor);
+                moduleClass.insert(keysWithStrings.value(tabName.at(j)), moduleParameters);
                 moduleClass.insert("0title", "qsTr(\"" + parentPath.last() + "\")");
+                moduleClass.insert("1active", "true");
                 currentTabs.insertMulti(pathTale, moduleClass);
             } else
             {
@@ -294,40 +219,42 @@ bool Initializer_1793::set_modules()
     tabViewString.replace(changeExp, "Tab");
     changeExp.setPattern("\\danchors.fill:");
     tabViewString.replace(changeExp, "anchors.fill:");
+    changeExp.setPattern("\\dactive:");
+    tabViewString.replace(changeExp, "active:");
     changeExp.setPattern(":\\s{");
     tabViewString.replace(changeExp, " {");
     changeExp.setPattern("\\\\");
     tabViewString.replace(changeExp, "\"");
 
-    //read main QML file
-    QFile main_view_file(QCoreApplication::applicationDirPath() + "/src/modules/interfaces/main_view.qml");
-    if (!main_view_file.open(QIODevice::ReadOnly | QIODevice::Text))
+
+    QString quickVersion = "2.7",
+            quickWindowVersion = "2.2",
+            quickControlsVersion = "1.4",
+            modulesFolderPath = "\"qrc:/src/modules/interfaces\"",
+            mainWindowDefaultWidth = "900",
+            mainWindowDefaultHeight = "700",
+            mainWindowMinimumWidth = "800",
+            mainWindowMinimumHeight = "600",
+            mainWindowTitle = "\"Project1793. Main Window\"";
+
+
+    QByteArray mainViewData;
+    mainViewData.append("import QtQuick " + quickVersion + "\nimport QtQuick.Window " + quickWindowVersion + "\nimport QtQuick.Controls " + quickControlsVersion + "\nimport " + modulesFolderPath + "\n\nWindow { \n    visible: true \n    id: root \n    width: " + mainWindowDefaultWidth + "\n    height: " + mainWindowDefaultHeight + "\n    minimumWidth: " + mainWindowMinimumWidth + "\n    minimumHeight: " + mainWindowMinimumHeight + "\n    title: qsTr(" + mainWindowTitle + ")\n");
+
+    mainViewData.append(tabViewString);
+    mainViewData.append("}");
+
+    //qDebug() << qPrintable(QVariant(*model->systemData.mainViewComponent).toString());
+
+    return mainViewData;
+}
+
+void ModulesManager_1793::start_modules(Model_1793* model)
+{
+    for (int i = 0; i < modulesList.count(); i++)
     {
-        Logger_1793::write_log_file(LogCriticalMsg, "Cannot open main_view.qml file");
-        return false;
+        modulesList.at(i)->initialize_module(model);
+        modulesList.at(i)->start_module();
     }
-    QString main_view_text = main_view_file.readAll();
-    main_view_file.close();
-
-    //compare current state of TabView hierarchy with just created
-    QRegularExpression regProcessMainViewText("((?<=//start_input)(?s)(.*)(?=//end_input))");
-    QRegularExpressionMatch match = regProcessMainViewText.match(main_view_text);
-
-    //if it mismatch then replace it with just created hierarhy
-    if (match.captured(0).compare(tabViewString))
-    {
-        main_view_text.replace(regProcessMainViewText, tabViewString);
-        if (!main_view_file.open(QIODevice::WriteOnly | QIODevice::Unbuffered))
-        {
-            Logger_1793::write_log_file(LogCriticalMsg, "Cannot write to main_view.qml file");
-            return false;
-        }
-        QByteArray text = main_view_text.toUtf8();
-        main_view_file.write(text);
-        main_view_file.close();
-        Logger_1793::write_log_file(LogWarningMsg,"main_view.qml was rewrited");
-    }
-    //qDebug() << "TabView created successfully";
-
-    return true;
+    qDebug() << WindowsManager_1793::getQmlRootObjects().count();
 }

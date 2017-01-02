@@ -19,17 +19,28 @@
 
 #include "dummymodule.h"
 
-DummyModule::DummyModule(QObject *parent) : QObject(parent)
-{
-    connect(Module_1793::qmlRootObjectHandler, SIGNAL(signalDummy()), this, SLOT(qmlSignalHandler()));
-}
-
-void DummyModule::initialize()
+DummyModule::DummyModule(QObject *parent) : Module_1793(parent)
 {
 
 }
 
-void DummyModule::terminate()
+DummyModule::~DummyModule()
+{
+
+}
+
+void DummyModule::start_module()
+{
+    //WindowsManager_1793::show_notification_warning("DummyModule started");
+
+    QObject* moduleRootObject = WindowsManager_1793::getQmlObject("dummyModule");
+
+    connect(moduleRootObject, SIGNAL(signalDummy()), this, SLOT(qmlSignalHandler()));
+
+    qDebug() << "DummyModule started";
+}
+
+void DummyModule::terminate_module()
 {
     qDebug() << "Dummy termination";
 }

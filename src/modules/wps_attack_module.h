@@ -34,7 +34,7 @@
 #define flag_interface_WPS_refreshing 1
 #define flag_interface_WPS_attack     2
 
-class WPS_Attack_module : public QObject
+class WPS_Attack_module : public Module_1793
 {
     Q_OBJECT
 public:
@@ -62,9 +62,6 @@ private:
     void append_new_message_to_std(const QVariant &data);
 
 public slots:
-    void initialize();
-    void terminate();
-
     //refreshing interfaces list
     void refresh_interfaces_list();
     void handle_interfaces_info();
@@ -103,6 +100,10 @@ signals:
     void clear_WPS_list_model();
     void add_new_WPS_network(const Network &network);
     void add_new_interface(const QString &interface);
+
+public slots:
+    void start_module();
+    void terminate_module();
 };
 
 #endif // WPS_ATTACK_MODULE_H

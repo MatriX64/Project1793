@@ -17,43 +17,44 @@
  *  along with Project1793.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODULEMANAGER_1793_H
-#define MODULEMANAGER_1793_H
+#ifndef MODULESMANAGER_1793_H
+#define MODULESMANAGER_1793_H
 
 #include <QObject>
 #include <QString>
 #include <QQmlApplicationEngine>
-#include <QCoreApplication>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QTimer>
 
-#include "logger_1793.h"
 #include "app_data/model_1793.h"
-#include "app_data/model_1793.h"
-
-//modules
-#include "../modules/wps_attack_module.h"
-#include "../modules/dummymodule.h"
+#include "module_1793.h"
 
 #include <QDebug>
 
-class ModuleManager_1793 : public QObject
+#define ModuleNotLoaded 100
+#define ModuleWait 101
+#define ModuleLoaded 102
+
+class ModulesManager_1793 : public QObject
 {
     Q_OBJECT
 public:
-    ModuleManager_1793(QObject *parent = 0);
-    ~ModuleManager_1793();
+    ModulesManager_1793(QObject *parent = 0);
+    ~ModulesManager_1793();
 public:
     Module_1793 moduleController;
 
 public:
-    void start();
-
-public: //modules
-    WPS_Attack_module wps_attack_module;
-    DummyModule dummy_module;
+    void add_new_module(Module_1793* module, const QString& moduleName, const QString& modulePath);
+    QByteArray set_modules();
+    void start_modules(Model_1793* model);
+    void terminate_modules();
 
 private:
-    void process_modules();
-    void delete_modules();
+    QList<Module_1793*> modulesList;
+    QList<QString> modulesNamesList;
+    QMap<QString,QString> qmlTabView;
 };
 
-#endif // MODULEMANAGER_1793_H
+#endif // MODULESMANAGER_1793_H

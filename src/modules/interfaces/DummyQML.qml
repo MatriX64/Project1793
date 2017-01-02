@@ -20,8 +20,9 @@
 import QtQuick 2.4
 
 Item {
-    id: testModule
-    objectName: "dummyObject"
+    objectName: "dummyModule"
+
+    signal signalDummy()
 
     DummyQMLForm {
         anchors.fill: parent

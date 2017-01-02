@@ -29,10 +29,25 @@ Item {
     Button {
         id: dummyButton
         x: 121
-        y: 44
+        y: 169
         width: 159
         height: 62
         text: qsTr("DummyButton")
         anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: parent.verticalCenter
+    }
+
+    Text {
+        id: text1
+        text: qsTr("Just for test")
+        anchors.right: parent.right
+        anchors.rightMargin: 129
+        anchors.left: parent.left
+        anchors.leftMargin: 8
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 344
+        anchors.top: parent.top
+        anchors.topMargin: 8
+        font.pixelSize: 19
     }
 }

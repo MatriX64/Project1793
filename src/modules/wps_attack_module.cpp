@@ -19,21 +19,9 @@
 
 #include "wps_attack_module.h"
 
-WPS_Attack_module::WPS_Attack_module(QObject *parent) : QObject(parent)
+WPS_Attack_module::WPS_Attack_module(QObject *parent) : Module_1793(parent)
 {
-    connect(Module_1793::qmlRootObjectHandler, SIGNAL(signal_Refresh_WPS_list(QString)), this, SLOT(refresh_WPS_networks_list(QString)));
 
-    connect(Module_1793::qmlRootObjectHandler, SIGNAL(signal_Refresh_interfaces_list()), this, SLOT(refresh_interfaces_list()));
-    connect(Module_1793::qmlRootObjectHandler, SIGNAL(signal_Stop_refreshing_WPS_list()), this, SLOT(stop_refreshing_WPS_list()));
-
-    connect(Module_1793::qmlRootObjectHandler, SIGNAL(signal_Start_WPS_attack(QString, QString, QString, int)), this, SLOT(WPS_attack(QString, QString, QString, int)));
-    connect(Module_1793::qmlRootObjectHandler, SIGNAL(signal_Stop_WPS_attack()), this, SLOT(stop_WPS_attack()));
-
-    connect(this, SIGNAL(add_new_WPS_network(Network)), Model_1793::model, SLOT(add_new_network(Network)));
-    connect(this, SIGNAL(add_new_interface(QString)), Model_1793::model, SLOT(add_new_interface(QString)));
-
-    connect(this, SIGNAL(clear_WPS_list_model()), Model_1793::model, SLOT(clear_WPS_networks_list()));
-    connect(this, SIGNAL(clear_interfaces_list_model()), Model_1793::model, SLOT(clear_interfaces_list()));
 }
 
 WPS_Attack_module::~WPS_Attack_module()
@@ -41,12 +29,31 @@ WPS_Attack_module::~WPS_Attack_module()
 
 }
 
-void WPS_Attack_module::initialize()
+void WPS_Attack_module::start_module()
 {
+    QObject* moduleRootObject = WindowsManager_1793::getQmlObject("wpsAttackModule");
+
+    connect(moduleRootObject, SIGNAL(signal_Refresh_WPS_list(QString)), this, SLOT(refresh_WPS_networks_list(QString)));
+
+    connect(moduleRootObject, SIGNAL(signal_Refresh_interfaces_list()), this, SLOT(refresh_interfaces_list()));
+    connect(moduleRootObject, SIGNAL(signal_Stop_refreshing_WPS_list()), this, SLOT(stop_refreshing_WPS_list()));
+
+    connect(moduleRootObject, SIGNAL(signal_Start_WPS_attack(QString, QString, QString, int)), this, SLOT(WPS_attack(QString, QString, QString, int)));
+    connect(moduleRootObject, SIGNAL(signal_Stop_WPS_attack()), this, SLOT(stop_WPS_attack()));
+
+    connect(this, SIGNAL(add_new_WPS_network(Network)), modelData, SLOT(add_new_network(Network)));
+    connect(this, SIGNAL(add_new_interface(QString)), modelData, SLOT(add_new_interface(QString)));
+
+    connect(this, SIGNAL(clear_WPS_list_model()), modelData, SLOT(clear_WPS_networks_list()));
+    connect(this, SIGNAL(clear_interfaces_list_model()), modelData, SLOT(clear_interfaces_list()));
+
+
+
     refresh_interfaces_list();
+    qDebug() << "WPS_Attack_module started";
 }
 
-void WPS_Attack_module::terminate()
+void WPS_Attack_module::terminate_module()
 {
     if (!switchInterfaceToMonitor.isNull())
     {
@@ -163,15 +170,6 @@ void WPS_Attack_module::terminate()
     }
     loadInterfacesList->waitForFinished();
     delete (loadInterfacesList);
-
-//    qDebug() << "startWPSAttack" << startWPSAttack.data();
-//    qDebug() << "loadWPSLits" << loadWPSLits.data();
-//    qDebug() << "loadInterfacesList" << loadInterfacesList.data();
-//    qDebug() << "switchInterfaceToMonitor" << switchInterfaceToMonitor.data();
-//    qDebug() << "switchInterfaceToStation" << switchInterfaceToStation.data();
-//    qDebug() << "checkAppsToKill" << checkAppsToKill.data();
-//    qDebug() << "puttingInterfaceDown" << puttingInterfaceDown.data();
-//    qDebug() << "puttingInterfaceUp" << puttingInterfaceUp.data();
 
     qDebug() << "WPS_Attack termination";
 }
@@ -413,7 +411,6 @@ void WPS_Attack_module::stop_refreshing_WPS_list()
             switch_interface_to_station();
         }
     } else
-
     {
         complete_routine();
     }
@@ -421,8 +418,8 @@ void WPS_Attack_module::stop_refreshing_WPS_list()
 
 void WPS_Attack_module::complete_routine()
 {
-    QObject* moduleObject = Module_1793::qmlRootObjectHandler->findChild<QObject*>("wpsAttackModule");
-    QMetaObject::invokeMethod(moduleObject, "show_all");
+    QObject* moduleRootObject = WindowsManager_1793::getQmlObject("wpsAttackModule");
+    QMetaObject::invokeMethod(moduleRootObject, "show_all");
 }
 
 void WPS_Attack_module::WPS_attack(const QString &interface, const QString &essid, const QString &bssid, const int pixie)
@@ -485,12 +482,7 @@ void WPS_Attack_module::handle_WPS_attack_data()
     }
     if (pskCheckStatus)
     {
-        QFile pskResult;
-        pskResult.setFileName(QCoreApplication::applicationDirPath() + "/cracking_results");
-        pskResult.open(QIODevice::WriteOnly | QIODevice::Append);
-        QTextStream stream(&pskResult);
-        stream << resultAttackData;
-        pskResult.close();
+        WindowsManager_1793::show_notification_info(resultAttackData);
     }
 }
 
@@ -572,7 +564,6 @@ void WPS_Attack_module::stop_WPS_attack()
             switch_interface_to_station();
         }
     } else
-
     {
         complete_routine();
     }
@@ -580,7 +571,8 @@ void WPS_Attack_module::stop_WPS_attack()
 
 void WPS_Attack_module::append_new_message_to_std(const QVariant& data)
 {
-    QObject* moduleObject = Module_1793::qmlRootObjectHandler->findChild<QObject*>("wpsAttackModule");
-    QMetaObject::invokeMethod(moduleObject, "append_stdout_text",
+    //WindowsManager_1793::show_notification_warning("Test"); -> it causes crash :(
+    QObject* moduleRootObject = WindowsManager_1793::getQmlObject("wpsAttackModule");
+    QMetaObject::invokeMethod(moduleRootObject, "append_stdout_text",
                               Q_ARG(QVariant, data));
 }

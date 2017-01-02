@@ -25,42 +25,37 @@
 #include <QStringList>
 #include <QByteArray>
 #include <QQmlContext>
-#include <QSharedPointer>
 #include <QVariant>
-#include <QThread>
 
-#include "../logger_1793.h"
 #include "wpsnetworklistmodel.h"
 #include "interfacesmodel.h"
 
 #include <QDebug>
 
+struct SystemData_1793
+{
+    QByteArray* mainViewComponentData;
+};
+
 class Model_1793 : public QObject
 {
     Q_OBJECT
 public:
-    Model_1793(QQmlApplicationEngine *engine, QObject* parent = 0);
+    Model_1793(QObject* parent = 0);
     ~Model_1793();
-    static Model_1793* model;
+
+    SystemData_1793 systemData;
 
 private: //modules data
     WPSNetworkListModel networksList;
     InterfacesModel interfacesList;
 
 
-public:
-    void start();
-
 public slots: //modules data slots
     void add_new_network(const Network &network);
     void clear_WPS_networks_list();
     void add_new_interface(const QString &interface);
     void clear_interfaces_list();
-
-public: //sysyem data
-    static QQmlApplicationEngine *engineHandler;
-    static QMap<QString,QString> qmlTabView;
-    static QList<QString> modulesList;
 };
 
 #endif // MODEL_1793_H

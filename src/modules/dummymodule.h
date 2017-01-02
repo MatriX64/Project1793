@@ -29,15 +29,16 @@
 
 #include "../core/module_1793.h"
 
-class DummyModule : public QObject
+class DummyModule : public Module_1793
 {
     Q_OBJECT
 public:
-    DummyModule(QObject *parent = 0);
+    explicit DummyModule(QObject *parent = 0);
+    ~DummyModule();
 
 public slots:
-    void initialize();
-    void terminate();
+    void start_module();
+    void terminate_module();
 
     void qmlSignalHandler();
 };

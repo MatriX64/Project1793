@@ -17,14 +17,44 @@
  *  along with Project1793.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "core/core_1793.h"
+#include <unistd.h>
+
+#include "core/app_data/model_1793.h"
+#include "core/modulesmanager_1793.h"
+#include "core/windowsmanager_1793.h"
+
+#include "modules/wps_attack_module.h"
+#include "modules/dummymodule.h"
+#include "modules/handshake_attack_module.h"
 
 int main(int argc, char *argv[])
 {
     QGuiApplication application(argc, argv);
 
-    Core_1793 core;
-    core.start();
+    QQmlApplicationEngine qmlEngine;
+    WindowsManager_1793 windowsManager;
+    windowsManager.initialize(qmlEngine);
 
-    return application.exec();
+    bool checkingRootStatus = true;
+    if (getuid() != 0)
+    {
+        WindowsManager_1793::show_notification_critical("Error. Please, run this program as root");
+        checkingRootStatus = false;
+    }
+
+    Model_1793 model;
+    ModulesManager_1793 modulesManager;
+
+    if (checkingRootStatus == true)
+    {
+        modulesManager.add_new_module(new WPS_Attack_module(),     "WPS_Attack",     "password_attacks|wep/wpa/wpa2_attacks|WPS_attack");
+        modulesManager.add_new_module(new RogueAP_Attack_module(), "Handshake_Attack", "password_attacks|wep/wpa/wpa2_attacks|Handshake_Attack");
+        modulesManager.add_new_module(new DummyModule(),           "DummyQML",       "password_attacks|test_module");
+
+        QByteArray mainViewData = modulesManager.set_modules();
+        windowsManager.load_main_view(mainViewData);
+        modulesManager.start_modules(&model);
+    }
+
+    application.exec();
 }

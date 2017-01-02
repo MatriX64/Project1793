@@ -1,9 +1,13 @@
 <RCC>
     <qresource prefix="/">
-        <file>src/core/interfaces/LauncherView.qml</file>
-        <file>src/core/interfaces/LauncherViewForm.ui.qml</file>
-        <file>images/waves.gif</file>
         <file>src/core/interfaces/FatalMessage.qml</file>
-        <file>src/core/interfaces/FatalMessageForm.ui.qml</file>
+        <file>src/modules/interfaces/DummyQML.qml</file>
+        <file>src/modules/interfaces/DummyQMLForm.ui.qml</file>
+        <file>src/modules/interfaces/WPS_Attack.qml</file>
+        <file>src/modules/interfaces/WPS_AttackForm.ui.qml</file>
+        <file>src/core/interfaces/InfoMessage.qml</file>
+        <file>src/core/interfaces/WarningMessage.qml</file>
+        <file>src/modules/interfaces/Handshake_Attack.qml</file>
+        <file>src/modules/interfaces/Handshake_AttackForm.ui.qml</file>
     </qresource>
 </RCC>

@@ -23,6 +23,12 @@ import QtQuick.Controls 1.4
 WPS_AttackForm {
     objectName: "wpsAttackModule"
 
+    signal signal_Refresh_interfaces_list()
+    signal signal_Refresh_WPS_list(string msg)
+    signal signal_Stop_refreshing_WPS_list()
+    signal signal_Start_WPS_attack(string interf, string essid, string bssid, int pixieState)
+    signal signal_Stop_WPS_attack()
+
     property var networkName: ""
     property var networkMac: ""
     property var interfaceName: ""
@@ -80,12 +86,12 @@ WPS_AttackForm {
     }
 
     function stop_refreshing_WPS_list() {
-        signal_Stop_refreshing_WPS_list()
         wpsRefreshNetworksList.checkable = false
         wpsRefreshNetworksList.checked = false
         wpsStopRefreshingNetworksList.checkable = true
         wpsStopRefreshingNetworksList.checked = true
         wpsStopRefreshingNetworksList.enabled = false
+        signal_Stop_refreshing_WPS_list()
     }
 
     function start_WPS_attack() {
@@ -102,12 +108,12 @@ WPS_AttackForm {
     }
 
     function stop_WPS_attack() {
-        signal_Stop_WPS_attack()
         wpsStartAttack.checkable = false
         wpsStartAttack.checked = false
         wpsStopAttack.checkable = true
         wpsStopAttack.checked = true
         wpsStopAttack.enabled = false
+        signal_Stop_WPS_attack()
     }
 
     function append_stdout_text(message) {
