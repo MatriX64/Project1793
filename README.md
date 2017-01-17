@@ -17,11 +17,11 @@ _This version tested on `Ubuntu` operating system ._
 
 **Download**
 
-`git clone https://github.com/MatriXSan/Project1793`
+`git clone https://github.com/sanmira32/Project1793`
 
 or
 
-`wget https://github.com/MatriXSan/Project1793/archive/master.zip && unzip master.zip`
+`wget https://github.com/sanmira32/Project1793/archive/master.zip && unzip master.zip`
 
 **Build**
 

@@ -571,7 +571,7 @@ void WPS_Attack_module::stop_WPS_attack()
 
 void WPS_Attack_module::append_new_message_to_std(const QVariant& data)
 {
-    //WindowsManager_1793::show_notification_warning("Test"); -> it causes crash :(
+    //WindowsManager_1793::show_notification_warning("Test");
     QObject* moduleRootObject = WindowsManager_1793::getQmlObject("wpsAttackModule");
     QMetaObject::invokeMethod(moduleRootObject, "append_stdout_text",
                               Q_ARG(QVariant, data));
